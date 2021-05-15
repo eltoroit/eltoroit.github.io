@@ -1,6 +1,5 @@
 lsi: false
 safe: true
-source: /BLOG
 incremental: false
 highlighter: rouge
 gist:
