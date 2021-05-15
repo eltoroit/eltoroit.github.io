@@ -8,3 +8,7 @@ kramdown:
   math_engine: mathjax
   syntax_highlighter: rouge
 theme: jekyll-theme-architect
+title: ELTOROIT - Electronics
+description: Journey throught the fantastic world of electronics, robotics, IoT, etc.
+show_downloads: false
+google_analytics:
