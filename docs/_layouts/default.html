@@ -35,6 +35,7 @@
     <div id="content-wrapper">
         <div class="inner clearfix">
             <section id="main-content">
+                <h1 class="no-before">{{ page.title }}</h1>
                 {{ content }}
             </section>
 
@@ -42,7 +43,7 @@
                 <ul>
                     {% for post in site.posts %}
                     <li>
-                        <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>{{post.date | date_to_string}} |
+                        <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>{{post.date | date_to_string}}
                         {{post.author}}
                         {{ post.excerpt }}
                     </li>
