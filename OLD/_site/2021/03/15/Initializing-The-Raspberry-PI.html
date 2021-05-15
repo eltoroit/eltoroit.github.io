@@ -1,0 +1,108 @@
+<p>Before we start working on the projects, we are going to need to initialize the Raspberry PI by setting up NodeJS and few other tools… so let’s begin.</p>
+
+<h1 id="prepare-the-hardware">Prepare The Hardware</h1>
+
+<p>Before you begin, let’s get some stuff ready. You will need:</p>
+
+<ul>
+  <li>Raspberry Pi computer</li>
+  <li>MicroSD memory card (minimum 16GB)</li>
+  <li>HDMI monitor</li>
+  <li>USB keyboard and mouse (Just for the setup, we will use SSH later on)</li>
+  <li>The “main computer”, which will help you download the Raspberry PI O/S and write to the Micro SD memory card</li>
+</ul>
+
+<h1 id="initializing-the-micro-sd-card">Initializing The Micro SD Card</h1>
+
+<ol>
+  <li>Go to https://www.raspberrypi.org/software and download the Raspberry Pi Imager for your operating system</li>
+  <li>Following the screens, choose the Raspberry PI OS. I have chosen the default entry “Raspberry Pi OS (32-bit)” and that is good for waht we need.</li>
+  <li>Click CRTL + SHIFT + X to open the advanced options
+    <ol>
+      <li>Enable SSH and set the password authentication</li>
+      <li>Configure the WIFI network</li>
+      <li>Click [<code class="language-plaintext highlighter-rouge">Save</code>]</li>
+    </ol>
+  </li>
+  <li>Select the storage based on the SD card you have available.</li>
+  <li>Finally click [<code class="language-plaintext highlighter-rouge">Write</code>]</li>
+</ol>
+
+<h1 id="initialize-the-raspberry-pi">Initialize The Raspberry PI</h1>
+
+<ol>
+  <li>Insert the Micro SD card in the Raspberry PI</li>
+  <li>Connect the monitor, mouse and keyboard</li>
+  <li>Turn it on, and follow the screens menus to setup the location, password, screen, WIFI, and perform software updates
+    <ul>
+      <li>If you do have several routers at your location, make sure this is as close as possible to the ISP modem so you can access your Raspberry PI from outside your network without having to configure too many hubs ;-)</li>
+    </ul>
+  </li>
+  <li>Enable SSH and VNC
+    <ol>
+      <li>Menu &gt; Preferences &gt; Raspberry PI Configuration &gt; Interfaces</li>
+      <li>Enable [<code class="language-plaintext highlighter-rouge">SSH</code>] and [<code class="language-plaintext highlighter-rouge">VNC</code>]</li>
+      <li>Click [<code class="language-plaintext highlighter-rouge">OK</code>] and [<code class="language-plaintext highlighter-rouge">OK</code>] again</li>
+      <li>On the terminal window, type [<code class="language-plaintext highlighter-rouge">hostname -I</code>] to find the Raspberry PI’s IP address in your local network</li>
+    </ol>
+  </li>
+  <li>On your main computer, you can use a SSH client and a VNC client to connect to your Raspberry PI using that IP address, when the VNC is completed you may disconnect the keyboard and mouse and just use your main computer.</li>
+</ol>
+
+<h1 id="configure-a-nodejs-web-server">Configure A NodeJS Web Server</h1>
+
+<ol>
+  <li>It’s always a good idea to ensure your Raspberry PI is updated before installing any software, so in the terminal window type [<code class="language-plaintext highlighter-rouge">sudo apt-get update</code>], [<code class="language-plaintext highlighter-rouge">sudo apt-get dist-upgrade</code>]</li>
+  <li>Following the steps here (https://github.com/nodesource/distributions#deb) we are going to install the LTS version of NodeJS. First you need to log in as root, so type this [<code class="language-plaintext highlighter-rouge">sudo su</code>], then type these commands [<code class="language-plaintext highlighter-rouge">curl -fsSL https://deb.nodesource.com/setup_current.x | bash -</code>] and then [<code class="language-plaintext highlighter-rouge">apt-get install -y nodejs</code>]</li>
+  <li>Let’s create a folder for the work, in the terminal window ensure you are in the home directory [<code class="language-plaintext highlighter-rouge">cd ~/</code>] and then [<code class="language-plaintext highlighter-rouge">mkdir work</code>] and [<code class="language-plaintext highlighter-rouge">cd work</code>]</li>
+  <li>Let’s ensure we have NodeJS running properly. Create a new folder [<code class="language-plaintext highlighter-rouge">mkdir tests</code>], then [<code class="language-plaintext highlighter-rouge">cd tests</code>] then [<code class="language-plaintext highlighter-rouge">echo "console.log('Hello NodeJS');" &gt; test01.js</code>] and finally [<code class="language-plaintext highlighter-rouge">node test01.js</code>]. You should see [<code class="language-plaintext highlighter-rouge">Hello NodeJS</code>] on the screen.</li>
+  <li>What about a web server? Copy this code in a file named [<code class="language-plaintext highlighter-rouge">test02.js</code>]</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>const http = require("http");
+const server = http.createServer((req, res) =&gt; {
+    res.writeHead(200, { "Content-Type": "text/html" });
+    res.write('&lt;h1&gt;Hello NodeJS&lt;/h1&gt;');
+    res.end(`${new Date()}`);
+});
+server.listen(8080, "127.0.0.1");
+console.log("Web server is running...");
+</code></pre></div></div>
+
+<p>Once the file has been saved, run it like this [<code class="language-plaintext highlighter-rouge">node test02.js</code>], you should see [<code class="language-plaintext highlighter-rouge">Web server is running...</code>] in the terminal, but more importantly, if you open the web browser in the Raspberry PI and go to this address <a href="http://127.0.0.1:3000">http://127.0.0.1:3000</a> you should see the message [<code class="language-plaintext highlighter-rouge">Hello NodeJS</code>] on the screen.</p>
+
+<p>At this point, we can browse the NodeJs web server from a browser in the Raspberry PI, but not from our main computer even though they are in the same network. Let’s fix that by installing NGINX</p>
+
+<ol>
+  <li>It’s always a good idea to ensure your Raspberry PI is updated before installing any software, so in the terminal window type [<code class="language-plaintext highlighter-rouge">sudo apt-get update</code>], [<code class="language-plaintext highlighter-rouge">sudo apt-get dist-upgrade</code>]</li>
+  <li>Now, let’s install NGINX by using this command [<code class="language-plaintext highlighter-rouge">sudo apt-get install nginx</code>] and follow the prompts.</li>
+  <li>At this point, we can open a browser on our main computer and browse to the IP address we found earlier ([<code class="language-plaintext highlighter-rouge">hostname -I</code>]). You should see a page with this message: <strong>Welcome to nginx!</strong></li>
+  <li>But this is not our NodeJS server, so let’s configure NGINX. First, make a backup of the current settings [<code class="language-plaintext highlighter-rouge">cd /etc/nginx/sites-available/</code>], then [<code class="language-plaintext highlighter-rouge">sudo cp default default.bak</code>] and now opening the config file [<code class="language-plaintext highlighter-rouge">sudo geany default</code>] and replacing the entire contents (that’s why we did a backup) with this code:</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>server {
+    listen 80;
+    server_name localhost;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+</code></pre></div></div>
+
+<ol>
+  <li>Restart NGINX by using this command [<code class="language-plaintext highlighter-rouge">sudo service nginx restart</code>], you should now be able open a web browser on the main computer and browse to the IP address for the Raspberry PI. If you configure your Modem (port redirect) you could expose your Raspberry PI as a web server to the world.</li>
+</ol>
+
+<h1 id="configure-vs-code-remote-development">Configure VS Code Remote Development</h1>
+
+<ol>
+  <li>On your main computer, open VS Code and add these two extensions <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh">Remote - SSH and Remote</a> and <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh-edit">SSH: Editing Configuration Files</a></li>
+  <li>Open the command palette and type [<code class="language-plaintext highlighter-rouge">&gt;Remote-SSH: Connect Current Window to Host...</code>] enter the IP address for your Raspberry PI and the password if asked.</li>
+  <li>You can now use the Raspberry PI from VS Code as if this was your main computer. For example, if you open files or save them, they will be written to the Raspberry PI. Actually if you open the terminal window, it’s your Raspberry PI… !</li>
+</ol>
