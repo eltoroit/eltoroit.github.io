@@ -1,3 +1,3 @@
-[Blog](https://eltoroit.github.io/)
-
-REadme (6)
+- [Blog](https://eltoroit.github.io/)
+- [Template](https://github.com/pages-themes/architect)
+- Readme (7)

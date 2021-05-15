@@ -3,7 +3,7 @@ layout: default
 title: Some title...
 ---
 
-# Hello World (6)
+# Hello World (7)
 
 <ul>
   {% for post in site.posts %}
