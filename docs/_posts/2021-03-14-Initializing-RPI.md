@@ -87,7 +87,7 @@ console.log("Web server is running...");
 
 Once the file has been saved, run it like this `node test02.js`, you should see `Web server is running...` in the terminal, but more importantly, if you open the web browser in the Raspberry Pi and go to this address `http://127.0.0.1:3000`, you should see the `Hello NodeJS` page with your current time.
 
-<img src="/assets/blog/2021-03-15/NodeJS_WebServer_Loalhost.png" />
+![NodeJS WebServer @ Localhost](/assets/blog/2021-03-14/NodeJS_WebServer_Localhost.png)
 
 At this point, we can browse the NodeJs web server from a browser on the same device (Raspberry Pi), but not from your main computer even though they are in the same network. Let’s fix that by installing NGINX
 
@@ -97,7 +97,7 @@ Now, let’s install NGINX using this command `sudo apt-get install nginx` and f
 
 At this point, we can open a browser on our main computer and browse to the IP address we found earlier (`hostname -I`). You should see a page with this message: Welcome to Nginx!
 
-<img src="/assets/blog/2021-03-15/NGINX_Basic.png" />
+![Basic NGINX](/assets/blog/2021-03-14/NGINX_Basic.png)
 
 But this is not our NodeJS server, so let’s configure NGINX.
 
