@@ -1,2 +1,6 @@
+# Rekyll
 docs/_site
 docs/*-cache
+
+# NodeJS
+node_modules
