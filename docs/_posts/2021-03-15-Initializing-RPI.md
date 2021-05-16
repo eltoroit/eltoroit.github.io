@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Initializing The Raspberry Pi (2)
+title: Initializing The Raspberry Pi
 ---
 
 Before we start working on the projects, we will need to initialize the Raspberry Pi by setting up NodeJS.

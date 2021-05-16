@@ -38,19 +38,3 @@ I will start the new series of blogs, sharing some of the knowledge I have acqui
     </li>
     {% endfor %}
 </ul>
-
-```js
-// Javascript code with syntax highlighting.
-var fun = function lang(l) {
-  dateformat.i18n = require("./lang/" + l);
-  return true;
-};
-```
-
-```node
-// Javascript code with syntax highlighting.
-var fun = function lang(l) {
-  dateformat.i18n = require("./lang/" + l);
-  return true;
-};
-```

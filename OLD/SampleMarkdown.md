@@ -5,6 +5,7 @@ layout: default
 Text can be **bold**, _italic_, or ~~strikethrough~~.
 
 [Link to another page](./another-page.html).
+<a href="XXX" target="_blank">YYY</a>
 
 There should be whitespace between paragraphs.
 
