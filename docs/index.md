@@ -26,6 +26,7 @@ There are other npm libraries. For example, <a href="https://www.npmjs.com/packa
 I will start the new series of blogs, sharing some of the knowledge I have acquired while working on some projects. So stay tuned, and join me in the discovery of this new fascinating world.
 
 # Articles Written
+
 <a name="Articles"></a>
 
 <ul>
@@ -37,3 +38,19 @@ I will start the new series of blogs, sharing some of the knowledge I have acqui
     </li>
     {% endfor %}
 </ul>
+
+```js
+// Javascript code with syntax highlighting.
+var fun = function lang(l) {
+  dateformat.i18n = require("./lang/" + l);
+  return true;
+};
+```
+
+```node
+// Javascript code with syntax highlighting.
+var fun = function lang(l) {
+  dateformat.i18n = require("./lang/" + l);
+  return true;
+};
+```
