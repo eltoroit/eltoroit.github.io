@@ -3,7 +3,7 @@ layout: default
 title: My Raspberry Pi + NodeJS Journey
 ---
 
-View the [**Articles written**](#Articles)
+_Are you looking for the articles? You can find them [here](#Articles)_
 
 You may have read some of my blogs on Salesforce development and architecture, but this year I decided to embark on a new hobby: Robotics! So this blog will be a bit different than the ones you regularly read from me.
 
@@ -29,9 +29,11 @@ I will start the new series of blogs, sharing some of the knowledge I have acqui
 <a name="Articles"></a>
 
 <ul>
-  {% for post in site.posts %}
+    {% for post in site.posts %}
     <li>
-      <a href="{{ post.url }}">{{ post.title }}</a>
+        <h2 style="margin-block-end: 0em;"><a href="{{ post.url }}">{{ post.title }}</a></h2>
+        {{post.date | date_to_string}}<br/>
+        <p>{{ post.excerpt }}</p>
     </li>
-  {% endfor %}
+    {% endfor %}
 </ul>
