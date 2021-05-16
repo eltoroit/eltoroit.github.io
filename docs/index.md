@@ -29,12 +29,11 @@ I will start the new series of blogs, sharing some of the knowledge I have acqui
 
 <a name="Articles"></a>
 
-<ul>
-    {% for post in site.posts %}
-    <li>
-        <h2 style="margin-block-end: 0em;"><a href="{{ post.url }}">{{ post.title }}</a></h2>
-        {{post.date | date_to_string}}<br/>
-        <p>{{ post.excerpt }}</p>
-    </li>
-    {% endfor %}
-</ul>
+{% for post in site.posts %}
+
+<h2 style="margin-block-end: 0em;">
+    <a href="{{ post.url }}">{{ post.title }}</a>
+</h2>
+{{post.date | date_to_string}}<br/>
+<p>{{ post.excerpt }}</p>
+{% endfor %}

@@ -61,7 +61,10 @@ If you prefer, you can run the debugger like this `node inspect S01_LedButton_RP
 # So what does this code do?
 
 - `1` Imports the RPIO library
-- `2` Imports a standard library that implements a very good timer with a resolution in micro-seconds. **More on this later.**
+- `2` Imports the <a href="https://nodejs.org/api/perf_hooks.html#perf_hooks_perf_hooks_performance" target="_blank">perf_hooks.performance standard library</a> that implements a very good timer with a resolution in milliseconds, similar to the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/performance" target="_blank">Window.performance</a> found in browsers.
+
+  As a software developer, if I need the [event loop in JavaScript](http://eteventloop.herokuapp.com/) to wait for a little bit I may use 1/2 a second because that is not a lot of time. Well, in electronics that is an eternity!
+
 - `4 - 5` Defines shortcuts for the HIGH/LOW values using the definitions in the RPIO library.
 - `7 - 8` Define the pins used for the LED and for the button. **More on this later.**
 - `12 - 14` Initializes the buttons to indicate the LED is output and the button is input. We also tell the button to use a pull-up resistor (rather than a pull-down - resistor). **More on this later.**
@@ -74,6 +77,9 @@ The main function (`24 - 40`)
 - `25` Defines the original state for the LED (off).
 - `26` Initializes the timer with the current time.
 - `28` Defines the length of time (500ms) that the button must be pressed before reacting.
+
+  View this article [**Debouncing A Button**]({% link _posts/2021-03-28-HelloIoT-RPIO.md %}) to understand why we have to do this.
+
 - `30 - 39` We are building a handler for the poll event on the button pin. This basically asks RPIO to let us know when the button is released.
 - `31` Get the value of the timer when the button is released.
 - `32` Checks to see if we should be acting on the information received
