@@ -48,6 +48,7 @@ It’s always a good idea to ensure your Raspberry Pi is updated before installi
 
 1. `sudo apt-get update`
 2. `sudo apt-get dist-upgrade`
+3. `sudo apt full-upgrade`
 
 Following the steps here <a href="https://github.com/nodesource/distributions#deb" target="_blank">https://github.com/nodesource/distributions#deb</a>, we are going to install the LTS version of NodeJS.
 

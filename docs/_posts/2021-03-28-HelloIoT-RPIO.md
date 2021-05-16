@@ -63,11 +63,17 @@ If you prefer, you can run the debugger like this `node inspect S01_LedButton_RP
 - `1` Imports the RPIO library
 - `2` Imports the <a href="https://nodejs.org/api/perf_hooks.html#perf_hooks_perf_hooks_performance" target="_blank">perf_hooks.performance standard library</a> that implements a very good timer with a resolution in milliseconds, similar to the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/performance" target="_blank">Window.performance</a> found in browsers.
 
-  As a software developer, if I need the [event loop in JavaScript](http://eteventloop.herokuapp.com/) to wait for a little bit I may use 1/2 a second because that is not a lot of time. Well, in electronics that is an eternity!
+  As a software developer, if I need the <aa href="http://eteventloop.herokuapp.com/" target="_blank">**event loop in JavaScript**</a> to wait for a little bit I may use 1/2 a second because that is not a lot of time. Well, in electronics that is an eternity!
 
 - `4 - 5` Defines shortcuts for the HIGH/LOW values using the definitions in the RPIO library.
-- `7 - 8` Define the pins used for the LED and for the button. **More on this later.**
-- `12 - 14` Initializes the buttons to indicate the LED is output and the button is input. We also tell the button to use a pull-up resistor (rather than a pull-down - resistor). **More on this later.**
+- `7 - 8` Define the pins used for the LED and for the button.
+
+  View this article [**GPIO Pins**]({% link _posts/2021-04-18-GPIO-pins.md %}) to understand why we are usign pins 11 and 12, rather than GPIO17 and GPIO18.
+
+- `12 - 14` Initializes the buttons to indicate the LED is output and the button is input. We also tell the button to use a pull-up resistor (rather than a pull-down - resistor).
+
+  View this article [**Pull-Up, Pull-Down Resistors**]({% link _posts/2021-05-02-PullUpDown.md %}) if you want to understand the difference between a pull-up and a pull-down resistor.
+
 - `16 - 22` Flip the output from a LOW to a HIGH or a HIGH to a LOW. This is how we are going to turn ON/OFF the LED.
 - `24 - 40` The main application... Read below for an explanation of how this function works.
 - `41` Invokes the main application
@@ -85,7 +91,7 @@ The main function (`24 - 40`)
 - `32` Checks to see if we should be acting on the information received
 - `35` Flip the state of the LED (in memory)
 - `36` Assign the value to the LED, changing the state of the LED (turns it ON or OFF).
-- `38` Store the current time. **More on this later.**
+- `38` Store the current time.
 - `39` RPIO allows us to specify when we want to be notified about the event. We want to be notified when the button gets released rather than when the button gets pressed.
 
 If you have read through the code description, you should have several questions pending because I told you that some of those pieces would be explained later. Unfortunately we run out of time for today, so I will be writing other articles in the near future to discuss these topics.

@@ -5,6 +5,9 @@ title: My Raspberry Pi + NodeJS Journey
 
 _Are you looking for the articles? You can find them [here](#Articles)_
 
+> “When you learn, teach, when you get, give.”
+> ― Maya Angelou
+
 You may have read some of my blogs on Salesforce development and architecture, but this year I decided to embark on a new hobby: Robotics! So this blog will be a bit different than the ones you regularly read from me.
 
 To start learning about this fantastic new world, I decided to purchase a few things on Christmas 2020 from Amazon. If you want to join me in this journey you may want to read the [**getting started**]({% link _posts/2021-02-28-GettingStarted.md %}) article.
