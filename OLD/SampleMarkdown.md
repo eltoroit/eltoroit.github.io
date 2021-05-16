@@ -5,7 +5,6 @@ layout: default
 Text can be **bold**, _italic_, or ~~strikethrough~~.
 
 [Link to another page](./another-page.html).
-<a href="XXX" target="_blank">YYY</a>
 
 There should be whitespace between paragraphs.
 
@@ -115,10 +114,6 @@ end
 
 ![Branching](https://guides.github.com/activities/hello-world/branching.png)
 
-<p style="text-align:center">
-    <video src="/assets/blog/2021-03-28/ProjectReview.mov" autoplay controls loop></video>
-</p>
-
 ### Definition lists can be used with HTML syntax.
 
 <dl>
@@ -141,3 +136,13 @@ The final element.
 ```
 
 For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+
+===
+
+<a href="XXX" target="_blank">YYY</a>
+
+<script src="https://gist.github.com/eltoroit/f8fb7d4fe49eb1f90f44e82ad950b934.js"></script>
+
+<p style="text-align:center">
+    <video src="/assets/blog/2021-03-28/ProjectReview.mov" autoplay controls loop></video>
+</p>

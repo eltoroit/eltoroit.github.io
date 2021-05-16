@@ -50,79 +50,36 @@ Please follow these steps to get the RPIO library ready:
 
 - Configure the RPIO npm package by using this command `npm install rpio`
 - Let’s add the node_modules folder to .gitignore `echo "node_modules" > .gitignore`
-- Create a file named S01_LedButton_RPIO.js with this code:
+- Create a file named `S01_LedButton_RPIO.js` with this code:
 
-```js
-const rpio = require("rpio");
-const { performance } = require("perf_hooks");
-
-const LOW = rpio.LOW;
-const HIGH = rpio.HIGH;
-
-const pinLED = 12;
-const pinButton = 11;
-
-console.log("Program is starting...\n");
-
-rpio.init();
-rpio.open(pinLED, rpio.OUTPUT, LOW);
-rpio.open(pinButton, rpio.INPUT, rpio.PULL_UP);
-
-function flipState(input) {
-  let output = HIGH;
-  if (input === HIGH) {
-    output = LOW;
-  }
-  return output;
-}
-
-function tableLamp() {
-  let stateLED = LOW;
-  let before = performance.now();
-  // How long must the button be kept down? (milliseconds)
-  const captureTime = 500;
-
-  rpio.poll(
-    pinButton,
-    (pin) => {
-      let now = performance.now();
-      if (now - before < captureTime) {
-        // Detected the button down multiple times, probably because of noise in the button
-      } else {
-        stateLED = flipState(stateLED);
-        rpio.write(pinLED, stateLED);
-      }
-      before = now;
-    },
-    rpio.POLL_LOW
-  );
-}
-tableLamp();
-```
+<script src="https://gist.github.com/eltoroit/f8fb7d4fe49eb1f90f44e82ad950b934.js"></script>
 
 Open the terminal panel, and type `node S01_LedButton_RPIO.js`. When the button gets pressed, the LED will change state from OFF to ON. If you press the button again, the state will change back to OFF.
 
 If you prefer, you can run the debugger like this `node inspect S01_LedButton_RPIO.js` and use VS Code to debug the code.
 
-So what does this code do?
+# So what does this code do?
 
-Line #1: Imports the RPIO library
-Line #2: Imports a standard library that implements a very good timer with a resolution in micro-seconds. More on this later.
-Lines #4 and #5: Defines shortcuts for the HIGH/LOW values using the definitions in the library.
-Lines #7 and #8: Define the pins used for the LED and for the button. More on this later.
-Lines #12 - 14: Initializes the buttons to indicate the LED is output and the button is input. We also tell the button to use a pull-up resistor (rather than a pull-down resistor). More on this later.
-Lines #16 - #22: Flip the output from a LOW to a HIGH or a HIGH to a LOW. This is how we are going to turn ON/OFF the LED.
-Lines #24 - #40: The main application… We will take a look at this in just a few seconds.
-Line #41: Invokes the main application
+- `1` Imports the RPIO library
+- `2` Imports a standard library that implements a very good timer with a resolution in micro-seconds. **More on this later.**
+- `4 - 5` Defines shortcuts for the HIGH/LOW values using the definitions in the RPIO library.
+- `7 - 8` Define the pins used for the LED and for the button. **More on this later.**
+- `12 - 14` Initializes the buttons to indicate the LED is output and the button is input. We also tell the button to use a pull-up resistor (rather than a pull-down - resistor). **More on this later.**
+- `16 - 22` Flip the output from a LOW to a HIGH or a HIGH to a LOW. This is how we are going to turn ON/OFF the LED.
+- `24 - 40` The main application... Read below for an explanation of how this function works.
+- `41` Invokes the main application
 
-Line #25: Defines the original state for the LED (off).
-Line #26: Initializes the timer with the current time.
-Line #28: Defines the length of time (500ms) that the button must be pressed before reacting.
-Lines #30 - #39: We are building a handler for the poll event on the button pin. This basically asks RPIO to let us know when the button is pressed.
-Lines #31 - #34: We are controlling the timer.
-Line #35: Flip the state of the LED
-Line #36: Assign the value to the LED, changing the state of the LED.
-Line #38: Store the current time. More on this later.
-Line #39: RPIO allows us to specify when we want to be notified about the event. We want to be notified when the button gets pressed rather than when the button gets released.
+The main function (`24 - 40`)
 
-If you have read through the code description, you should have several questions pending because I told you that some of those pieces would be explained later. Well, now it’s the time…
+- `25` Defines the original state for the LED (off).
+- `26` Initializes the timer with the current time.
+- `28` Defines the length of time (500ms) that the button must be pressed before reacting.
+- `30 - 39` We are building a handler for the poll event on the button pin. This basically asks RPIO to let us know when the button is released.
+- `31` Get the value of the timer when the button is released.
+- `32` Checks to see if we should be acting on the information received
+- `35` Flip the state of the LED (in memory)
+- `36` Assign the value to the LED, changing the state of the LED (turns it ON or OFF).
+- `38` Store the current time. **More on this later.**
+- `39` RPIO allows us to specify when we want to be notified about the event. We want to be notified when the button gets released rather than when the button gets pressed.
+
+If you have read through the code description, you should have several questions pending because I told you that some of those pieces would be explained later. Unfortunately we run out of time for today, so I will be writing other articles in the near future to discuss these topics.
