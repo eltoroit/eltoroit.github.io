@@ -50,6 +50,13 @@
                         <p>{{ post.excerpt }}</p>
                     </li>
                     {% endfor %}
+                    <li>
+                        <h2 style="margin-block-end: 0em;"><a href="/">My Raspberry Pi + NodeJS Journey</a></h2>
+                        14 Feb 2021<br /><br />
+                        <p>You may have read some of my blogs on Salesforce development and architecture, but this year
+                            I decided to embark on a new hobby: Robotics! So this blog will be a bit different than the
+                            ones you regularly read from me.</p>
+                    </li>
                 </ul>
 
 
@@ -87,5 +94,15 @@
     </script>
     {% endif %}
 </body>
+
+<script>
+    // Links to other sites should open in a new window 
+    setTimeout(() => {
+        let anchors = Array.from(document.querySelectorAll("a")).filter(a => a.href.indexOf(window.location.origin) === -1);
+        anchors.forEach(a => {
+            a.target = "_blank";
+        })
+    }, 1000)
+</script>
 
 </html>

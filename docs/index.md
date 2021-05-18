@@ -20,11 +20,11 @@ I decided that if I wanted to learn, I would have to challenge myself, so I came
 
 This was a great idea because I have to fully understand the sample code they provide to rewrite it using JavaScript. The book has some essential explanations of how things work. But it does not go into a lot of depth. Sometimes they do oversimplify things, but having to translate the code to another language requires me to go into a lot of depth on the information provided and learn not only how it’s done but why it’s done. So the book, together with Google, has been a great educational experience!
 
-But it was easier said than done, especially at the beginning of my journey. After a lot of research (trial and error and plenty of googling), I found a couple of good npm libraries named <a href="https://www.npmjs.com/package/rpio" target="_blank">RPIO</a> and <a href="https://www.npmjs.com/package/pigpio" target="_blank">PIGPIO</a> that work pretty well with Raspberry Pi and Javascript. So far, they have everything I need.
+But it was easier said than done, especially at the beginning of my journey. After a lot of research (trial and error and plenty of googling), I found a couple of good npm libraries named [RPIO](https://www.npmjs.com/package/rpio) and [PIGPIO](https://www.npmjs.com/package/pigpio) that work pretty well with Raspberry Pi and Javascript. So far, they have everything I need.
 
 If I had to choose just one of those libraries, I would use PIGPIO because it has more features. For example, I have noticed that RPIO does hardware-based PWM, but PIGPIO does software-based PWM. Why is this important? It allows me to use more pins on the Raspberry Pi. That will be a topic for another post ;-)
 
-There are other npm libraries. For example, <a href="https://www.npmjs.com/package/johnny-five" target="_blank">Johny-Five</a> allows you to write simpler NodeJS code because it has one more abstraction layer. But this is precisely the reason I have stayed away from that library: it does too much hand-holding. I feel this would not help me learn as much, but it could help me later in some projects.
+There are other npm libraries. For example, [Johny-Five](https://www.npmjs.com/package/johnny-five) allows you to write simpler NodeJS code because it has one more abstraction layer. But this is precisely the reason I have stayed away from that library: it does too much hand-holding. I feel this would not help me learn as much, but it could help me later in some projects.
 
 I will start the new series of blogs, sharing some of the knowledge I have acquired while working on some projects. So stay tuned, and join me in the discovery of this new fascinating world.
 
@@ -39,4 +39,5 @@ I will start the new series of blogs, sharing some of the knowledge I have acqui
 </h2>
 {{post.date | date_to_string}}<br/>
 <p>{{ post.excerpt }}</p>
+
 {% endfor %}

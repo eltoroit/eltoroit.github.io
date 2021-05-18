@@ -7,16 +7,16 @@ Before we start working on the projects, we will need to initialize the Raspberr
 
 # Prepare The Hardware
 
-Before you begin, let’s get some stuff ready. You will need:
+Before you begin, let's get some stuff ready. You will need:
 
 - Raspberry Pi computer
 - MicroSD memory card (minimum 16GB)
-- A computer to download the O/S and write to the Micro SD memory card. We will call this the “main computer.”
+- A computer to download the O/S and write to the Micro SD memory card. We will call this the "main computer."
   HDMI monitor, USB keyboard and mouse. This will just be used for the setup because we won’t need them once we configure SSH.
 
 # Initialize The SD Card
 
-1. Go to <a href="https://www.raspberrypi.org/software" target="_blank">https://www.raspberrypi.org/software</a> and download the **Raspberry Pi Imager** for your operating system.
+1. Go to [https://www.raspberrypi.org/software](https://www.raspberrypi.org/software) https://www.raspberrypi.org/software and download the **Raspberry Pi Imager** for your operating system.
 2. Following the screens, choose the Raspberry Pi OS. For this, we will select the default “**Raspberry Pi OS (32-bit).**”
 3. Click CRTL + SHIFT + X to open the advanced options
    - Enable SSH and set the password authentication
@@ -50,7 +50,7 @@ It’s always a good idea to ensure your Raspberry Pi is updated before installi
 2. `sudo apt-get dist-upgrade`
 3. `sudo apt full-upgrade`
 
-Following the steps here <a href="https://github.com/nodesource/distributions#deb" target="_blank">https://github.com/nodesource/distributions#deb</a>, we are going to install the LTS version of NodeJS.
+Following the steps here [https://github.com/nodesource/distributions#deb](https://github.com/nodesource/distributions#deb), we are going to install the LTS version of NodeJS.
 
 1. You need to log in as root, so type this `sudo su`
 2. Download NodeJS `curl -fsSL https://deb.nodesource.com/setup_current.x | bash -`

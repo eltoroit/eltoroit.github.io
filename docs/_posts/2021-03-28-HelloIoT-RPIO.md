@@ -44,7 +44,7 @@ These are the steps to get the circuit working:
 
 # Using The RPIO Library
 
-For today's blog, we are going to use the <a href="https://www.npmjs.com/package/rpio" target="_blank">RPIO</a> library. In a future blog post we will build the same project using <a href="https://www.npmjs.com/package/pigpio" target="_blank">PIGPIO</a> so that we can compare the differences.
+For today's blog, we are going to use the [RPIO](https://www.npmjs.com/package/rpio) library. In a future blog post we will build the same project using [PIGPIO](https://www.npmjs.com/package/pigpio) so that we can compare the differences.
 
 Please follow these steps to get the RPIO library ready:
 
@@ -61,9 +61,9 @@ If you prefer, you can run the debugger like this `node inspect S01_LedButton_RP
 # So what does this code do?
 
 - `1` Imports the RPIO library
-- `2` Imports the <a href="https://nodejs.org/api/perf_hooks.html#perf_hooks_perf_hooks_performance" target="_blank">perf_hooks.performance standard library</a> that implements a very good timer with a resolution in milliseconds, similar to the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/performance" target="_blank">Window.performance</a> found in browsers.
+- `2` Imports the [perf_hooks.performance standard library](https://nodejs.org/api/perf_hooks.html#perf_hooks_perf_hooks_performance) that implements a very good timer with a resolution in milliseconds, similar to the [Window.performance](https://developer.mozilla.org/en-US/docs/Web/API/Window/performance) found in browsers.
 
-  As a software developer, if I need the <aa href="http://eteventloop.herokuapp.com/" target="_blank">**event loop in JavaScript**</a> to wait for a little bit I may use 1/2 a second because that is not a lot of time. Well, in electronics that is an eternity!
+  As a software developer, if I need the [**event loop in JavaScript**](http://eteventloop.herokuapp.com/) to wait for a little bit I may use 1/2 a second because that is not a lot of time. Well, in electronics that is an eternity!
 
 - `4 - 5` Defines shortcuts for the HIGH/LOW values using the definitions in the RPIO library.
 - `7 - 8` Define the pins used for the LED and for the button.
