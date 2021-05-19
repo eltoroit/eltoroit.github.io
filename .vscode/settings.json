@@ -1,0 +1,24 @@
+{
+    "grammarly.overrides": [
+        {
+            "files": [
+                "**/docs/_posts/2021-04-18-GPIO-pins.md"
+            ],
+            "config": {
+                "audience": "general",
+                "dialect": "british",
+                "domain": "technical",
+                "emotions": [
+                    "confident",
+                    "joyful",
+                    "optimistic",
+                    "analytical"
+                ],
+                "goals": [
+                    "inform",
+                    "describe"
+                ]
+            }
+        }
+    ]
+}
