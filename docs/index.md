@@ -1,6 +1,6 @@
 ---
 layout: default
-isPublished: true
+published: true
 title: My Raspberry Pi + NodeJS Journey
 ---
 
@@ -34,7 +34,6 @@ I want to start a series of blogs, sharing the knowledge I have gained while wor
 <a name="Articles"></a>
 
 {% for post in site.posts %}
-{% if (post.isPublished) %}
 
 <h2 style="margin-block-end: 0em;">
     <a href="{{ post.url }}">{{ post.title }}</a>
@@ -42,5 +41,4 @@ I want to start a series of blogs, sharing the knowledge I have gained while wor
 {{post.date | date_to_string}}<br/>
 <p>{{ post.excerpt }}</p>
 
-{% endif %}
 {% endfor %}

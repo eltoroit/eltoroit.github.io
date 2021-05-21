@@ -3,6 +3,7 @@
 ## Website
 
 - builder: https://jekyllrb.com/
+  - `bundle exec jekyll serve --watch --port 3000 --unpublished --drafts`
 - Code: https://gist.github.com/
 
 ## Circuits

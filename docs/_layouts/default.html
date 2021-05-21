@@ -44,13 +44,11 @@
             <aside id="sidebar">
                 <ul>
                     {% for post in site.posts %}
-                    {% if (post.isPublished) %}
                     <li>
                         <h2 style="margin-block-end: 0em;"><a href="{{ post.url }}">{{ post.title }}</a></h2>
                         {{post.date | date_to_string}}
                         <p>{{ post.excerpt }}</p>
                     </li>
-                    {% endif %}
                     {% endfor %}
                     <li>
                         <h2 style="margin-block-end: 0em;"><a href="/">My Raspberry Pi + NodeJS Journey</a></h2>

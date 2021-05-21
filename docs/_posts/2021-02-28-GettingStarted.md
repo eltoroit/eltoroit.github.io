@@ -1,6 +1,6 @@
 ---
 layout: default
-isPublished: true
+published: true
 title: Getting Started
 ---
 
