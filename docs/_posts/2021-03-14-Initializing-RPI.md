@@ -1,5 +1,6 @@
 ---
 layout: default
+isPublished: true
 title: Initializing The Raspberry Pi
 ---
 

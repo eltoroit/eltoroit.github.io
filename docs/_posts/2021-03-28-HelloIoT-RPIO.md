@@ -1,5 +1,6 @@
 ---
 layout: default
+isPublished: true
 title: Hello IoT (RPIO)
 ---
 
@@ -44,7 +45,7 @@ These are the steps to get the circuit working:
 
 # Using The RPIO Library
 
-For today's blog, we are going to use the [RPIO](https://www.npmjs.com/package/rpio) library. In a future article, we will build the same project using [PIGPIO](https://www.npmjs.com/package/pigpio) to compare the differences.
+For today's blog, we are going to use the [RPIO](https://www.npmjs.com/package/rpio) library. In a future article ([Hello IoT (PIGPIO)]({% link _posts/2021-05-16-HelloIoT-PIGPIO.md %})), we are building the same project using [PIGPIO](https://www.npmjs.com/package/pigpio) and comparing the differences.
 
 Please follow these steps to get the RPIO library ready:
 

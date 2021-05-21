@@ -2,17 +2,15 @@
     "grammarly.overrides": [
         {
             "files": [
-                "**/docs/_posts/2021-04-18-GPIO-pins.md"
+                "**/docs/**/*.md"
             ],
             "config": {
-                "audience": "general",
-                "dialect": "british",
+                "audience": "knowledgeable",
+                "dialect": "canadian",
                 "domain": "technical",
                 "emotions": [
-                    "confident",
-                    "joyful",
-                    "optimistic",
-                    "analytical"
+                    "neutral",
+                    "confident"
                 ],
                 "goals": [
                     "inform",
@@ -20,5 +18,10 @@
                 ]
             }
         }
+    ],
+    "grammarly.userWords": [
+        "PIGPIO",
+        "sudo",
+        "pigpiod"
     ]
 }
