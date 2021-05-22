@@ -5,7 +5,7 @@ published: true
 title: Getting Started
 ---
 
-If you want to start learning about this beautiful world, I recommend you get a hold of these items:
+If you want to start learning about this beautiful world, I recommend you get a hold of some items.
 
 - Raspberry Pi 4 starter kit comes with everything you need to get started (the actual computer, the micro SD card, and power supply). I got the 4GB RAM version. [Amazon.ca](https://www.amazon.ca/gp/product/B07XLMVYJJ/ref=ppx_yo_dt_b_asin_title_o05_s00?ie=UTF8&psc=1)
 
