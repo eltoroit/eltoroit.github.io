@@ -37,6 +37,24 @@
                     "describe"
                 ]
             }
+        },
+        {
+            "files": [
+                "**/docs/_posts/2021-04-30-PWM.md"
+            ],
+            "config": {
+                "audience": "knowledgeable",
+                "dialect": "canadian",
+                "domain": "technical",
+                "emotions": [
+                    "analytical"
+                ],
+                "goals": [
+                    "inform",
+                    "describe",
+                    "convince"
+                ]
+            }
         }
     ],
     "grammarly.userWords": [
