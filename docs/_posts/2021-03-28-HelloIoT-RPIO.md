@@ -64,16 +64,16 @@ If you prefer, you can run the debugger like this `node inspect S01_LedButton_RP
 - `1` Imports the RPIO library
 - `2` Imports the [perf_hooks.performance standard library](https://nodejs.org/api/perf_hooks.html#perf_hooks_perf_hooks_performance), which implements a nice timer with a resolution in milliseconds, similar to the [Window.performance](https://developer.mozilla.org/en-US/docs/Web/API/Window/performance) found in browsers.
 
-  As a software developer, if I need the [**event loop in JavaScript**](http://eteventloop.herokuapp.com/) to wait for a little bit, I may use 1/2 a second because that is not much time. Well, in electronics, that is an eternity!
+  As a software developer, if I need the [event loop in JavaScript\*\*](http://eteventloop.herokuapp.com/) to wait for a little bit, I may use 1/2 a second because that is not much time. Well, in electronics, that is an eternity!
 
 - `4 - 5` Defines shortcuts for the HIGH/LOW values using the definitions in the RPIO library.
 - `7 - 8` Define the pins used for the LED and the button.
 
-  View this article [**GPIO Pins**]({% link _posts/2021-04-18-GPIO-pins.md %}) to understand why we are using pins 11 and 12 rather than GPIO17 and GPIO18.
+  View this article [GPIO Pins]({% link _posts/2021-04-18-GPIO-pins.md %}) to understand why we are using pins 11 and 12 rather than GPIO17 and GPIO18.
 
 - `12 - 14` Initializes the buttons to indicate the LED is output and the button is input. We also tell the button to use a pull-up resistor (rather than a pull-down - resistor).
 
-  View this article [**Pull-Up, Pull-Down Resistors**]({% link _posts/2021-05-02-PullUpDown.md %}) if you want to understand the difference between a pull-up and a pull-down resistor.
+  View this article [Pull-Up, Pull-Down Resistors]({% link _posts/2021-05-02-PullUpDown.md %}) if you want to understand the difference between a pull-up and a pull-down resistor.
 
 - `16 - 22` Flips the output from a LOW to a HIGH or vice-versa, turning ON/OFF the LED.
 - `24 - 40` The main application… Read below for an explanation of how this function works.
@@ -85,7 +85,7 @@ Let's talk about the function that makes everything happen (lines `24 - 40`)
 - `26` Initializes the timer with the current time.
 - `28` Defines the length of time (500ms) that the button must be pressed before reacting.
 
-  View this article [**Debouncing A Button**]({% link _posts/2021-03-28-HelloIoT-RPIO.md %}) to understand why we have to do this.
+  View this article [Debouncing A Button]({% link _posts/2021-03-28-HelloIoT-RPIO.md %}) to understand why we have to do this.
 
 - `30 - 39` We are building a handler for the poll event on the button pin, asking RPIO to inform us when the button is released.
 - `31` Get the value of the timer when the button is released.

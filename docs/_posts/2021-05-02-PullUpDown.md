@@ -16,7 +16,7 @@ Digital electronics have two different values:
 
   VCC (Voltage Common Collector) is the higher voltage with relation to GND (ground). In Raspberry Pi circuits, VCC is usually either 3.3 volts or 5 volts.
 
-But in reality, we are working with analog voltages ranging anywhere from 0 volts to VCC volts. If you remember the video I showed you on the [**Debouncing A Button**]({% link _posts/2021-04-04-DebounceButton.md %}) article, the voltages can have any value between 0 volts and VCC.
+But in reality, we are working with analog voltages ranging anywhere from 0 volts to VCC volts. If you remember the video I showed you on the [Debouncing A Button]({% link _posts/2021-04-04-DebounceButton.md %}) article, the voltages can have any value between 0 volts and VCC.
 
 So if we are working on a logic circuit where 5 volts is VCC (HIGH/TRUE) and 0 volts is gound (LOW/FALSE), what about 4.5 volts? Does that correspond to a HIGH/TRUE value? What about 4.999 volts? What about 2.5 volts? 2.4? 2.6? Where do the breaks happen? Those were the questions I was asking myself at this moment. I was surprised when I found the answer: There is not a standard set of values. Depending on the technology you are using (TTL, CMOS, GTL, and others), the ranges are different, as illustrated in this image:
 

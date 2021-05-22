@@ -6,7 +6,7 @@ title: Debouncing A Button
 
 Electricity is too fast! What are noisy buttons, and why do we have to account for them?
 
-In a previous article ([**Hello IoT (RPIO)**]({% link _posts/2021-03-28-HelloIoT-RPIO.md %})), you may remember we had to define the button state has to be stable for 500ms before we take action.
+In a previous article ([Hello IoT (RPIO)]({% link _posts/2021-03-28-HelloIoT-RPIO.md %})), you may remember we had to define the button state has to be stable for 500ms before we take action.
 
 Debouncing a button is required because when a push-button switch is pressed or released, it does not change immediately between states. Actually, mechanical vibrations can introduce noise. We have to account for this in our code by waiting for the button to stabilize.
 

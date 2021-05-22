@@ -96,13 +96,18 @@
 </body>
 
 <script>
-    // Links to other sites should open in a new window 
-    setTimeout(() => {
-        let anchors = Array.from(document.querySelectorAll("a")).filter(a => a.href.indexOf(window.location.origin) === -1);
+    // Links to other sites should open in a new window and links to internal blog should be bolded 
+    document.addEventListener("DOMContentLoaded", function () {
+        let anchors = Array.from(document.querySelectorAll("a"));
         anchors.forEach(a => {
-            a.target = "_blank";
+            let isExternal = a.href.indexOf(window.location.origin) === -1;
+            if (isExternal) {
+                a.target = "_blank";
+            } else {
+                a.style.fontWeight = "bold";
+            }
         })
-    }, 1000)
+    });
 </script>
 
 </html>
