@@ -10,9 +10,9 @@ We have seen in the [Hello IoT (RPIO)]({% link _posts/2021-03-28-HelloIoT-RPIO.m
 
 # How to dim an LED?
 
-Let's look at a simple [datasheet for a standard LED](https://marktechopto.com/pdf/products/datasheet/MT4118-HR-A.pdf); this may not be the same LED we are using, but all of them work very similar. Some of the values may be a bit different but the concepts, which is what I want to show you, work the same way. There are two specific charts that I want to highlight from that datasheet.
+Let's look at a simple [datasheet for a standard LED](https://marktechopto.com/pdf/products/datasheet/MT4118-HR-A.pdf). This may not be the same LED we are using, but all of them work very similar. Some of the values may be a bit different but the concepts, which is what I want to show you, work the same way.
 
-The first chart shows the forward current and voltage operation. What is interesting to see here is that the voltage is around 2.2 volts (1.8 volts to 2.4 volts). It does change as much as the current, which goes from 0 mA to 50 mA!
+There are two specific charts that I want to highlight from that datasheet. The first chart shows the forward current and forward voltage operation. What is interesting to see here is that the voltage is around 2.2 volts (1.8 volts to 2.4 volts). It does change much. But the current goes from 0 mA to 50 mA!
 
 ![Forward current vs. applied voltage](/assets/blog/2021-05-30/LED_Chart01.png)
 
@@ -27,5 +27,53 @@ Fantastic, so how can we dim an LED? Vary the current! But how? We can build a s
 The 30 Ω resistor protects the LED when the potentiometer is set to 0 Ω. By varying the potentiometer from 0% (0 Ω) to 100% (200 Ω) we can vary the current and therefore dimming the LED. I used a very cool simulator named [EveryCircuit](https://everycircuit.com/app/) to see the different values for the voltages, current and intensity of the LED. This is shown on this animation:
 
 <p style="text-align:center">
-    <video src="/assets/blog/2021-05-30/PWM_01.mov" autoplay controls loop></video>
+    <video src="https://eltoroit.github.io/assets/blog/2021-05-30/PWM_01.mov" style="max-width: 100%;" autoplay controls loop></video>
 </p>
+
+The previous animation is cool, but Raspberry Pi can't change the potentiometer! The code we have seen in the previous articles does not even change the current; it only outputs a voltage (HIGH or LOW). So how can we control the current?
+
+# Power
+
+Wait, I thought you were building a story to modify the current, and now you are switching to talk about power? What is going on?
+
+Don't worry. I promise it is going to make sense soon. Let's go back and cover some basic concepts. Do you remember the definitions for voltage, current and resistance?
+
+Wikipedia defines these terms like this: the **voltage** (volts) is how much energy is between two points on a circuit. The **current:** (amperes) is how fast the charge is flowing through a circuit. The **resistance:** (ohms) is how much the circuit resists the flow of charge. I have seen a great cartoon that visually explains the difference between these terms.
+
+![Voltage, current, and resistance](/assets/blog/2021-05-30/V-I-R.jpg)
+
+These terms are so important that we have a formula named [Ohm's law](https://simple.wikipedia.org/wiki/Ohm's_law) that establishes the relation between these properties. It states that in "an electrical circuit, the _current_ passing through a _resistor_ is related to the _voltage_ difference and the electrical resistance between the two sides, as long as the physical conditions and the temperature of the conductor remain constant."
+
+<h2>Voltage = Current * Resistance</h2>
+
+In the circuit above, the minimum resistance is 30 Ω. We do not have zero ohms unless we have a short circuit, and we probably do not want that. So, as long as we have voltage, we must have current. If we do not have voltage, we do not have current, and vice-versa.
+
+The relation between current and voltage is so essential to a circuit that we even have a word to define it: Power!
+
+Power, measured in Watts, is defined as "the rate at which energy is absorbed or produced within a circuit." We have another important law which states:
+
+<h2>Power = Voltage * Current</h2>
+
+The table below shows the values for voltage, current, resistance and power in the circuit we had seen earlier as we vary the resistance in the potentiometer
+
+| Percentage | Resistance (Ω) | Voltage (V) | Current (mA) | Power (mW) |
+| ---------- | -------------: | ----------: | -----------: | ---------: |
+| 1%         |             32 |        2.07 |        39.30 |         81 |
+| 10%        |             50 |        2.03 |        26.00 |         53 |
+| 20%        |             70 |        2.00 |        19.10 |         38 |
+| 30%        |             90 |        1.97 |        15.10 |         30 |
+| 40%        |            110 |        1.95 |        12.50 |         24 |
+| 50%        |            130 |        1.94 |        10.70 |         21 |
+| 60%        |            150 |        1.92 |         9.39 |         18 |
+| 70%        |            170 |        1.91 |         8.36 |         16 |
+| 80%        |            190 |        1.89 |         7.54 |         14 |
+| 90%        |            210 |        1.88 |         6.87 |         13 |
+| 99%        |            228 |        1.88 |         6.36 |         12 |
+
+<p></p>
+
+I think I am following you, but I am still confused. How is the Raspberry Pi going to dim the LED? We can't use a potentiometer unless we had a motor, and that would be complicated. (yes, it would!)
+
+Ok, let's talk about that. We can't change the resistance of the circuit because we would have to change the circuit or change the potentiometer manually, and that would be cheating. We can't change the voltage on the GPIO pin; it's either 3.3 volts or zero volts but not a value in between. Also, voltage changes do not affect the intensity of the LED, so that would not help much. If we have a fixed voltage and a fixed resistance, we have a fixed current. So it looks like we are stuck!
+
+Fortunately, looks are deceiving!

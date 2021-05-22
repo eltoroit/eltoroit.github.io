@@ -17,6 +17,26 @@
                     "describe"
                 ]
             }
+        },
+        {
+            "files": [
+                "**/docs/_drafts/PWM.md"
+            ],
+            "config": {
+                "audience": "knowledgeable",
+                "dialect": "canadian",
+                "domain": "technical",
+                "emotions": [
+                    "confident",
+                    "joyful",
+                    "optimistic",
+                    "analytical"
+                ],
+                "goals": [
+                    "inform",
+                    "describe"
+                ]
+            }
         }
     ],
     "grammarly.userWords": [
