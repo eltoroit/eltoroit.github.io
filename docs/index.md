@@ -1,5 +1,6 @@
 ---
 layout: default
+comments: true
 published: true
 title: My Raspberry Pi + NodeJS Journey
 ---
