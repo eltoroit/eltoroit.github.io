@@ -12,8 +12,8 @@ We are all familiar with the "Hello World" samples in tutorials, so let's keep t
 
 Rather than describing the functionality of the project we are building, let's watch it in action because a picture is worth a thousand words, and an animated GIF is worth a thousand pictures.
 
-<p style="text-align:center; max-width: 100%;">
-    <video src="/assets/blog/2021-03-28/ProjectReview.mov" autoplay controls loop></video>
+<p style="text-align:center">
+    <video src="/assets/blog/2021-03-28/ProjectReview.mov" style="max-width: 100%;" autoplay controls loop></video>
 </p>
 
 To be clear, this is how the project works:

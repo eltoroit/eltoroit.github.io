@@ -29,8 +29,8 @@ It takes at least one minute after pushing for the changes to be published to pa
 
 - Video
 
-<p style="text-align:center; max-width: 100%;">
-    <video src="/assets/blog/2021-04-04/NoisyButton.mov" autoplay controls loop></video>
+<p style="text-align:center;">
+    <video src="/assets/blog/2021-04-04/NoisyButton.mov" style="max-width: 100%;" autoplay controls loop></video>
 </p>
 
 - GIST

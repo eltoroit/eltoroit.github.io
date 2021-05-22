@@ -18,8 +18,8 @@ When I first read about this, I could not believe this would be an issue; how co
 
 To make the issue more obvious, I replaced the switch for a pair of cables I manually joined, simulating a faulty button. As you can see below, this issue is very real, and we need to account for it!
 
-<p style="text-align:center; max-width: 100%;">
-    <video src="/assets/blog/2021-04-04/NoisyButton.mov" autoplay controls loop></video>
+<p style="text-align:center;">
+    <video src="/assets/blog/2021-04-04/NoisyButton.mov" style="max-width: 100%;" autoplay controls loop></video>
 </p>
 
 If we had a different project, where the LED stays ON only while holding down the button, then we would not worry because it would be too fast for your eyes.
