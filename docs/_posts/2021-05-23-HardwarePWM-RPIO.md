@@ -42,22 +42,23 @@ Let's take a look at other parts of this code.
 
 - `1` Import the [RPIO](https://www.npmjs.com/package/rpio) library
 - `2` Import the pins library. See the article [GPIO Pins]({% link _posts/2021-04-18-GPIO-pins.md %}) to understand why this is required.
-- `3-23` This class isolates the hardware implementation using RPIO from the part that controls the duty cycle percentage. Notice we are using - a promise which never resolves or rejects, so we never end it. That's how we are making an infinite loop.
-- `79-80` This is just the invocation of the main code.
+- `4-25` This class isolates the hardware implementation using RPIO from the part that controls the duty cycle percentage.
+- `27-75` We are controlling the duty cycle percentage.
+- `77-78` This is just the invocation of the main code.
 
-- `5` ClockDivider helps define the frequency or period of the duty cycle.
-- `6` We are using GPIO18, but we need the physical number of the pin. We use [GPIO Pins]({% link _posts/2021-04-18-GPIO-pins.md %}) to - calculate the value.
-- `10` Opens the GPIO18 pin for PWM functionality.
-- `11` Sets the clock divider for the duty cycle.
-- `12` Sets the range of values. In our case, we are using values from 0 to 1000 (range passed as a parameter to the constructor)
-- `16` Writes the value when it changes. In our case, this happens once per second, and it's not related to the duty cycle frequency.
-- `20` Close the application by resetting the pin and turning the LED off at the end of the application.
+- `5` The duty cycle is divided into 1000 pieces, so when we increase 20%, we are increasing by 200 points.
+- `6` ClockDivider helps define the frequency or period of the duty cycle.
+- `7` We are using GPIO18, but we need the physical number of the pin. We use [GPIO Pins]({% link _posts/2021-04-18-GPIO-pins.md %}) to - calculate the value.
+- `11` Opens the GPIO18 pin for PWM functionality.
+- `12` Sets the clock divider for the duty cycle.
+- `13` Sets the range of values. In our case, we are using values from 0 to 1000 (range passed as a parameter to the constructor)
+- `16-19` Receives the percentage, a value greater than 0 and less than or equals 1, indicating the duty cycle percentage.
+- `18` Writes the value when it changes. In our case, this happens once per second, and it's not related to the duty cycle frequency.
+- `22` Close the application by resetting the pin and turning the LED off at the end of the application.
 
-- `35` The duty cycle is divided into 1000 pieces, so when we increase 20%, we are increasing by 200 points.
 - `36` We are going to update the percentages once per second (1000 ms).
 - `39` Instantiate the class that handles the hardware.
 - `41-51` Detect and handle the events when the NodeJS process terminates
-- `55-75` A promise that never success or fails to create a process that never ends.
-- `56-64` Update values when we reach the extremes
-- `66-69` If the data is within the correct range, then call the hardware (`68`) to update the LED.
-- `72-74` The infinite loop
+- `54-63` Update values when we reach the extremes
+- `65-68` If the data is within the correct range, then call the hardware (`67`) to update the LED.
+- `71-73` The infinite loop

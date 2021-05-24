@@ -1,26 +1,30 @@
-const rpio = require('rpio');
+const pigpio = require('pigpio');
+const Gpio = pigpio.Gpio;
 const { Pins } = require('./pins');
 
-class LedRPIO {
-    _range = 1000;
-    _clockDivider = 8;
-    _pin = Pins.BCM_2_Physical(18);
+class LedPIGPIO {
+    _led = null;
+    _clock = 5;
+    _range = 25; // https://github.com/fivdi/pigpio/blob/master/doc/gpio.md#pwmrangerange
+    _frequency = 8000; // https://github.com/fivdi/pigpio/blob/master/doc/gpio.md#pwmrangerange
+    _pin = Pins.BCM_2_BCM(18);
 
     constructor() {
-        rpio.init({ gpiomem: false, close_on_exit: false })
-        rpio.open(this._pin, rpio.PWM);
-        rpio.pwmSetClockDivider(this._clockDivider);
-        rpio.pwmSetRange(this._pin, this._range);
+        pigpio.initialize();
+        pigpio.configureClock(this._clock, pigpio.CLOCK_PWM); // https://github.com/fivdi/pigpio/blob/master/doc/configuration.md#configureclockmicroseconds-peripheral
+        this._led = new Gpio(this._pin, { mode: Gpio.OUTPUT });
+        this._led.pwmRange(this._range); // https://github.com/fivdi/pigpio/blob/master/doc/gpio.md#pwmrangerange
+        this._led.pwmFrequency(this._frequency); // https://github.com/fivdi/pigpio/blob/master/doc/gpio.md#pwmfrequencyfrequency
+        this._led.digitalWrite(Pins.PIGPIO.LOW);
     }
 
     writeValue(percentage) {
-        let value = Math.floor(percentage * this._range);
-        rpio.pwmSetData(this._pin, value);
+        this._led.pwmWrite(Math.floor(this._range * percentage));
     }
 
     shutdown() {
-        rpio.close(this._pin, rpio.PIN_RESET);
-        rpio.exit();
+        this._led.digitalWrite(0);
+        pigpio.terminate();
     }
 }
 
@@ -36,7 +40,7 @@ class LedLogic {
         this._delay = 1e3;
         this._factor = .2;
         this._step = 1 * this._factor;
-        this._led = new LedRPIO();
+        this._led = new LedPIGPIO();
 
         process.on('SIGINT', () => {
             console.log();
@@ -62,6 +66,7 @@ class LedLogic {
             console.log(`${new Date().toJSON()} >> Switch (v)`);
         }
 
+        this._data = 0.5;
         if (this._data >= 0 && this._data <= 1) {
             console.log(`${new Date().toJSON()} >> ${parseFloat(100 * this._data).toFixed(2)}% (${this._step > 0 ? '^' : 'v'})`);
             this._led.writeValue(this._data);
