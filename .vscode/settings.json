@@ -55,6 +55,25 @@
                     "convince"
                 ]
             }
+        },
+        {
+            "files": [
+                "**/docs/_drafts/DimmingLED.md"
+            ],
+            "config": {
+                "audience": "knowledgeable",
+                "dialect": "canadian",
+                "domain": "technical",
+                "emotions": [
+                    "neutral",
+                    "confident",
+                    "analytical"
+                ],
+                "goals": [
+                    "inform",
+                    "describe"
+                ]
+            }
         }
     ],
     "grammarly.userWords": [
