@@ -2,7 +2,7 @@
 layout: default
 comments: true
 published: true
-title: Shopping List
+title: Minimum Shopping List
 ---
 
 If you want to start learning about this beautiful world, I recommend you get a hold of some items.
