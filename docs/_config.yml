@@ -9,5 +9,5 @@ kramdown:
   syntax_highlighter: rouge
 theme: jekyll-theme-architect
 title: ELTOROIT - Electronics
-description: Journey throught the fantastic world of electronics, robotics, IoT, etc.
+description: Diary of a developer learning about the fascinating world of electronics (mechatronics, robotics, IoT). Join me, and learn together.
 show_downloads: false

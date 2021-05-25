@@ -60,5 +60,5 @@ Let's take a look at other parts of this code.
 - `39` Instantiate the class that handles the hardware.
 - `41-51` Detect and handle the events when the NodeJS process terminates
 - `54-63` Update values when we reach the extremes
-- `65-68` If the data is within the correct range, then call the hardware (`67`) to update the LED.
+- `65-68` If the data is within the correct range, call the hardware (`67`) to update the LED.
 - `71-73` The infinite loop

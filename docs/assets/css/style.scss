@@ -4,5 +4,9 @@
 @import "{{ site.theme }}";
 
 .no-before:before {
-    content: none !important;
+  content: none !important;
+}
+
+.githubButton {
+  background: transparent url(/assets/images/GithubButton.png) 0 0 no-repeat !important;
 }

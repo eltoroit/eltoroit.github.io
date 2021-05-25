@@ -19,22 +19,11 @@
 <body>
     <header>
         <div class="inner">
-            <a href="{{ '/' | absolute_url }}">
-                <h1>{{ site.title | default: site.github.repository_name }}</h1>
-            </a>
-            <h2>{{ site.description | default: site.github.project_tagline }}</h2>
-            <!-- {% if site.github.is_project_page %}
-            <a href="{{ site.github.repository_url }}" class="button"><small>View project on</small> GitHub</a>
-            {% endif %}
-            {% if site.github.is_user_page %}
-            <a href="{{ site.github.owner_url }}" class="button"><small>Follow me on</small> GitHub</a>
-            {% endif %} -->
-            <!-- Google search <form method="get" action="http://www.google.com/search" style="padding: 0px;" target="_blank">
-                <input type="hidden" name="sitesearch" value="eltoroit.github.io" />
-                <input type="text" name="q" maxlength="255" style="width: 100%;" placeholder="Search with Google" />
-            </form> -->
-            <a href="https://github.com/eltoroit/eltoroit.github.io" class="button" target="_blank"><small>View repo
-                    on</small> GitHub</a>
+            <h1 style="width: unset; text-align: center;">ELTOROIT's Journey</h1>
+            <h2 style="width: unset;">Diary of a developer learning about the fascinating world of electronics,
+                mechatronics, robotics, IoT. Join me; let's learn together!</h2><br />
+            <h2 style="width: unset; text-align: center; font-size: 21px; color: #b6d4e6;"><i>When you learn, teach,
+                    when you get, give. &mdash; Maya Angelou</i></h2>
         </div>
     </header>
 
@@ -76,6 +65,8 @@
                     </li>
                     {% endfor %}
                 </ul>
+                <a href="https://github.com/eltoroit/eltoroit.github.io" class="button githubButton"
+                    target="_blank"><small>View repo on</small> GitHub</a>
 
 
                 <!-- {% if site.show_downloads %}

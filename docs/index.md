@@ -7,9 +7,6 @@ title: Electronics For Developers
 
 <img src="/assets/blog/index/RPI+NJS.png" style="text-align: center; display: block; margin-left: auto; margin-right: auto;" />
 
-> “When you learn, teach, when you get, give.”
-> ― Maya Angelou
-
 # Articles Written
 
 {% for post in site.posts %}
