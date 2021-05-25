@@ -2,7 +2,7 @@
 layout: default
 comments: true
 published: true
-title: Getting Started
+title: Shopping List
 ---
 
 If you want to start learning about this beautiful world, I recommend you get a hold of some items.
