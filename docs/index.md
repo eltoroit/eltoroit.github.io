@@ -5,7 +5,7 @@ published: true
 title: Electronics For Developers
 ---
 
-<img src="/assets/blog/index/RPI+NJS.png" style="text-align: center; display: block; margin-left: auto; margin-right: auto;" />
+<img src="/assets/images/RPI+NJS.png" style="text-align: center; display: block; margin-left: auto; margin-right: auto;max-width: 80%;" />
 
 # Articles Written
 
