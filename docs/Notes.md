@@ -25,7 +25,11 @@ It takes at least one minute after pushing for the changes to be published to pa
 
 - Graph Calculator: https://www.desmos.com/calculator
 
-## Commmon Links
+## Other Bloggers
+
+- https://wdmartins.medium.com/
+
+## Common Links
 
 - [RPIO](https://www.npmjs.com/package/rpio)
 - [PIGPIO](https://www.npmjs.com/package/pigpio)
