@@ -13,12 +13,12 @@ In the previous article ([Pulse-Width Modulation (PWM) - Theory]({% link _posts/
 
 We are going to build a simple circuit with an LED and a resistor as shown on this schematic:
 
-![Schematic](/assets/blog/2021-05-23/Schematic.png)
+![Schematic](/assets/blog/2021-05-30/Schematic.png)
 
 BTW, The 220 Ω resistor is needed to protect the LED. When I build this circuit, I connected the oscilloscope to see the Pulse-Width Modulation (PWM) in action and a multimeter to measure the current going through the LED.
 
 <p style="text-align:center;">
-    <video src="/assets/blog/2021-05-23/ProjectOverview.mov" style="max-width: 100%;" autoplay controls loop></video>
+    <video src="/assets/blog/2021-05-30/ProjectOverview.mov" style="max-width: 100%;" autoplay controls loop></video>
 </p>
 
 # Hardware-based PWM (RPIO)
