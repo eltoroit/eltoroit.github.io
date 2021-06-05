@@ -5,7 +5,7 @@ published: true
 title: Initializing The Raspberry Pi
 ---
 
-Before we start working on the projects, we need to initialize the Raspberry Pi by setting up NodeJS.
+Before we start working on the projects, we need to initialize the Raspberry Pi by setting up Node.js.
 
 # Prepare The Hardware
 
@@ -44,7 +44,7 @@ Before you begin, let's get some stuff ready. You need:
 
    You can use an SSH client (command line terminal) and a VNC client (GUI desktop) to connect your main computer to the Raspberry Pi using that IP address. After completing the VNC setup, you may disconnect the monitor, keyboard and mouse.
 
-# Configure NodeJS
+# Configure Node.js
 
 It's always a good idea to update your Raspberry Pi before installing any software, so open the terminal window and execute these commands:
 
@@ -52,10 +52,10 @@ It's always a good idea to update your Raspberry Pi before installing any softwa
 2. Type `sudo apt-get dist-upgrade.`
 3. Type `sudo apt full-upgrade.`
 
-Following the steps here [https://github.com/nodesource/distributions#deb](https://github.com/nodesource/distributions#deb), we are going to install the LTS version of NodeJS.
+Following the steps here [https://github.com/nodesource/distributions#deb](https://github.com/nodesource/distributions#deb), we are going to install the LTS version of Node.js.
 
 1. You need to log in as root, so type this `sudo su`.
-2. Download NodeJS `curl -fsSL https://deb.nodesource.com/setup_current.x | bash -`
+2. Download Node.js `curl -fsSL https://deb.nodesource.com/setup_current.x | bash -`
 3. Install it `apt-get install -y nodejs`.
 
 Let's create a folder for the work in the terminal window.
@@ -64,16 +64,16 @@ Let's create a folder for the work in the terminal window.
 2. Make the folder `mkdir work`
 3. Navigate to it `cd work`
 
-Let's ensure we have NodeJS running correctly.
+Let's ensure we have Node.js running correctly.
 
 1. Create a new folder `mkdir tests`
 2. Change to it `cd tests`
-3. Write a simple NodeJS code `echo "console.log('Hello NodeJS');" > test01.js`
+3. Write a simple Node.js code `echo "console.log('Hello Node.js');" > test01.js`
 4. Run it `node test01.js`
 
-You should see `Hello NodeJS` on the screen.
+You should see `Hello Node.js` on the screen.
 
-# Configure a NodeJS Web Server
+# Configure a Node.js Web Server
 
 What about a web server? Great question! I am glad you asked. Let's copy this code in a file named `test02.js`
 
@@ -81,18 +81,18 @@ What about a web server? Great question! I am glad you asked. Let's copy this co
 const http = require("http");
 const server = http.createServer((req, res) => {
   res.writeHead(200, { "Content-Type": "text/html" });
-  res.write("<h1>Hello NodeJS</h1>");
+  res.write("<h1>Hello Node.js</h1>");
   res.end(`${new Date()}`);
 });
 server.listen(3000, "127.0.0.1");
 console.log("Web server is running…");
 ```
 
-After saving the file, run it by typing this command: `node test02.js`. You should see `Web server is running…` in the terminal, but more importantly, if you open the web browser in the Raspberry Pi and go to this address `http://127.0.0.1:3000`, you should see the `Hello NodeJS` page with your current time.
+After saving the file, run it by typing this command: `node test02.js`. You should see `Web server is running…` in the terminal, but more importantly, if you open the web browser in the Raspberry Pi and go to this address `http://127.0.0.1:3000`, you should see the `Hello Node.js` page with your current time.
 
-![NodeJS WebServer @ Localhost](/assets/blog/2021-03-14/NodeJS_WebServer_Localhost.png)
+![Node.js WebServer @ Localhost](/assets/blog/2021-03-14/NodeJS_WebServer_Localhost.png)
 
-At this point, we can browse the NodeJs web server from a browser on the same device (Raspberry Pi), but not from your main computer even though they are in the same network. Let's fix that by installing NGINX
+At this point, we can browse the Node.js web server from a browser on the same device (Raspberry Pi), but not from your main computer even though they are in the same network. Let's fix that by installing NGINX
 
 It's always a good idea to update your Raspberry Pi before installing any software, so in the terminal window, type `sudo apt-get update` followed by `sudo apt-get dist-upgrade`
 
@@ -102,7 +102,7 @@ At this point, we can open a browser on our main computer and browse to the IP a
 
 ![Basic NGINX](/assets/blog/2021-03-14/NGINX_Basic.png)
 
-But this is not our NodeJS server, so let's configure NGINX.
+But this is not our Node.js server, so let's configure NGINX.
 
 1. Change to the directory where NGINX stores the configuration settings `cd /etc/nginx/sites-available/`
 2. Make a backup of the current settings `sudo cp default default.bak`

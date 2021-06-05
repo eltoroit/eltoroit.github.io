@@ -52,7 +52,7 @@ It takes at least one minute after pushing for the changes to be published to pa
 
 - Images
 
-![NodeJS WebServer @ Localhost](/assets/blog/2021-03-14/NodeJS_WebServer_Localhost.png)
+![Node.js WebServer @ Localhost](/assets/blog/2021-03-14/NodeJS_WebServer_Localhost.png)
 
 - Links to posts
 

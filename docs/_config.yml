@@ -8,11 +8,13 @@ kramdown:
   math_engine: mathjax
   syntax_highlighter: rouge
 theme: jekyll-theme-architect
-title: ELTOROIT's Journey
-description: Diary of a Salesforce developer on the magical world of electronics and IoT. Join me, as I share my experiences in this fantastic world. Let's learn together!
 show_downloads: false
 plugins:
   - jekyll-feed
   - jekyll-sitemap
   - jekyll-seo-tag
 url: "https://eltoroit.github.io"
+# Search Engine
+title: ELTOROIT's Journey
+tagline: Diary of a developer learning electronics
+description: Diary of a Salesforce + Node.js developer learning electronics IoT, primarily on . Join me, as I share my experiences in this fantastic world. Let's learn together!

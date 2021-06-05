@@ -21,11 +21,11 @@ To be clear, this is how the project works:
 
 - When you press the button, the switch S1 closes, and the voltage goes down to 0 Volts.
 - When the button is released, the switch S1 opens, and the voltage goes back to VCC (3.3 volts)
-- The NodeJS code detects the switch is released, and it changes the state of the LED (LED1) from OFF to ON or vice-versa.
+- The Node.js code detects the switch is released, and it changes the state of the LED (LED1) from OFF to ON or vice-versa.
 
 Notice this is different than having the LED light only while pressing down the button! _(this is important, and explained below)_
 
-# The NodeJS code
+# The Node.js code
 
 These are the steps to get the circuit working:
 

@@ -5,11 +5,11 @@ published: true
 title: Hello IoT (PIGPIO)
 ---
 
-This article is part 2 of another article I wrote a few weeks ago ([Hello IoT (RPIO)]({% link _posts/2021-03-28-HelloIoT-RPIO.md %})), where we are building the same circuit, but the code is written in NodeJS using the [PIGPIO](https://www.npmjs.com/package/pigpio) library. I highly recommend you read that article before you continue reading this one.
+This article is part 2 of another article I wrote a few weeks ago ([Hello IoT (RPIO)]({% link _posts/2021-03-28-HelloIoT-RPIO.md %})), where we are building the same circuit, but the code is written in Node.js using the [PIGPIO](https://www.npmjs.com/package/pigpio) library. I highly recommend you read that article before you continue reading this one.
 
 # PIGPIO
 
-As indicated on the [PIGPIO page](https://www.npmjs.com/package/pigpio), this is a wrapper for the [pigpio C library](https://github.com/joan2937/pigpio) but built for NodeJS.
+As indicated on the [PIGPIO page](https://www.npmjs.com/package/pigpio), this is a wrapper for the [pigpio C library](https://github.com/joan2937/pigpio) but built for Node.js.
 
 Before we can start using this library, we must ensure we have Pigpio C library installed, so please go ahead and type `pigpiod -v` in the terminal window. We should already have a version installed, but to be safe, let's bring it up to the newest version with these commands `sudo apt-get update` and then `sudo apt-get install pigpio`.
 
