@@ -8,6 +8,10 @@ kramdown:
   math_engine: mathjax
   syntax_highlighter: rouge
 theme: jekyll-theme-architect
-title: ELTOROIT - Electronics
-description: Diary of a developer learning about the fascinating world of electronics (mechatronics, robotics, IoT). Join me, and learn together.
+title: ELTOROIT's Journey
+description: Diary of a Salesforce developer on the magical world of electronics and IoT. Join me, as I share my experiences in this fantastic world. Let's learn together!
 show_downloads: false
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
