@@ -5,7 +5,7 @@ published: true
 title: Hardware-based PWM with RPIO
 ---
 
-This project builds a simple circuit that uses Hardware-based Pulse-Width Modulation (PWM).
+This project builds a simple circuit that uses Hardware-based Pulse-Width Modulation (PWM) with RPIO.
 
 In the previous article ([Pulse-Width Modulation (PWM) - Theory]({% link _posts/2021-05-29-PWM.md %})), we reviewed why PWM works. Let's now take a look at how we can get PWM working on Raspberry Pi using JavaScript. The project described here today uses Hardware-based PWM via the [RPIO](https://www.npmjs.com/package/rpio) library.
 
@@ -23,11 +23,13 @@ BTW, The 220 Ω resistor is needed to protect the LED. When I build this circuit
 
 # Hardware-based PWM (RPIO)
 
+> Hardware-based PWM does not require CPU resources, and it has a more precise time control. Even if the CPU is busy, the Raspberry Pi updates the correct values at the correct time. But on the Raspberry Pi 4, we only have four pins that we can use: GPIO18 (pin 12), GPIO12 (pin 32), GPIO13 (pin 33), and GPIO19 (pin 35). Suppose we were building a circuit with an RGB LED (which requires 3 PWM pins - one for each colour) and one switch; we would run out of pins!
+
 The code below uses Hardware-based PWM via the [RPIO](https://www.npmjs.com/package/rpio) npm package.
 
 <script src="https://gist.github.com/eltoroit/21ac1e7de8709aab41b8c6f6967e3f7a.js"></script>
 
-Although this is a simple project, I have decided to write the code using two classes: **LedRPIO** handles the hardware, and **LedLogic** handles the logic. This separation allows me to separate the usage of RPIO and swap this part for another class that uses PIGPIO in the following article. The logic is quite simple. An infinite loop varies the duty cycle by 20%, either increasing or decreasing the percentage. Each iteration of the loop occurs every second.
+Although this is a simple project, I have decided to write the code using two classes: **LedRPIO** handles the hardware, and **LedLogic** handles the logic. Organizing the code this way allows me to separate the usage of RPIO and swap this part for another class that uses PIGPIO in the following article. The logic is quite simple. An infinite loop varies the duty cycle by 20%, either increasing or decreasing the percentage. Each iteration of the loop occurs every second.
 
 There are some numbers that we need to discuss:
 

@@ -5,16 +5,16 @@ const { Pins } = require('./pins');
 class LedPIGPIO {
     _led = null;
     _clock = 5;
-    _range = 25; // https://github.com/fivdi/pigpio/blob/master/doc/gpio.md#pwmrangerange
-    _frequency = 8000; // https://github.com/fivdi/pigpio/blob/master/doc/gpio.md#pwmrangerange
+    _range = 25;
+    _frequency = 8000;
     _pin = Pins.BCM_2_BCM(18);
 
     constructor() {
         pigpio.initialize();
-        pigpio.configureClock(this._clock, pigpio.CLOCK_PWM); // https://github.com/fivdi/pigpio/blob/master/doc/configuration.md#configureclockmicroseconds-peripheral
+        pigpio.configureClock(this._clock, pigpio.CLOCK_PWM);
         this._led = new Gpio(this._pin, { mode: Gpio.OUTPUT });
-        this._led.pwmRange(this._range); // https://github.com/fivdi/pigpio/blob/master/doc/gpio.md#pwmrangerange
-        this._led.pwmFrequency(this._frequency); // https://github.com/fivdi/pigpio/blob/master/doc/gpio.md#pwmfrequencyfrequency
+        this._led.pwmRange(this._range);
+        this._led.pwmFrequency(this._frequency);
         this._led.digitalWrite(Pins.PIGPIO.LOW);
     }
 
@@ -66,7 +66,6 @@ class LedLogic {
             console.log(`${new Date().toJSON()} >> Switch (v)`);
         }
 
-        this._data = 0.5;
         if (this._data >= 0 && this._data <= 1) {
             console.log(`${new Date().toJSON()} >> ${parseFloat(100 * this._data).toFixed(2)}% (${this._step > 0 ? '^' : 'v'})`);
             this._led.writeValue(this._data);

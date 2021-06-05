@@ -15,11 +15,17 @@ It takes at least one minute after pushing for the changes to be published to pa
 
 ## Circuits
 
+## Simulate
+
 - Fritzing: https://fritzing.org/ (Computer app)
 - Pretty Simulator: https://dcaclab.com/en/lab
 - Fancy circuits: https://www.circuitlab.com/
   - Includes eBook
 - Nice: https://everycircuit.com/app/
+
+## Draw
+
+- https://www.circuit-diagram.org/editor/
 
 ## Math
 
@@ -41,6 +47,10 @@ It takes at least one minute after pushing for the changes to be published to pa
 <p style="text-align:center;">
     <video src="/assets/blog/2021-04-04/NoisyButton.mov" style="max-width: 100%;" autoplay controls loop></video>
 </p>
+
+- Images
+
+![NodeJS WebServer @ Localhost](/assets/blog/2021-03-14/NodeJS_WebServer_Localhost.png)
 
 - Links to posts
 
@@ -155,10 +165,6 @@ end
   - level 2 item
   - level 2 item
 - level 1 item
-
-### Images
-
-![NodeJS WebServer @ Localhost](/assets/blog/2021-03-14/NodeJS_WebServer_Localhost.png)
 
 ### Definition lists can be used with HTML syntax.
 

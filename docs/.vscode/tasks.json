@@ -16,8 +16,8 @@
                 "reveal": "always",
                 "panel": "dedicated",
                 "clear": true,
-                "focus": false,
-                "showReuseMessage": false
+                "focus": true,
+                "showReuseMessage": true
             }
         }
     ]
