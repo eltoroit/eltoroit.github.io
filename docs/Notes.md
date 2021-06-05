@@ -156,13 +156,9 @@ end
   - level 2 item
 - level 1 item
 
-### Small image
+### Images
 
-![Octocat](https://github.githubassets.com/images/icons/emoji/octocat.png)
-
-### Large image
-
-![Branching](https://guides.github.com/activities/hello-world/branching.png)
+![NodeJS WebServer @ Localhost](/assets/blog/2021-03-14/NodeJS_WebServer_Localhost.png)
 
 ### Definition lists can be used with HTML syntax.
 

@@ -7,7 +7,7 @@ title: Hardware-based PWM with RPIO
 
 This project builds a simple circuit that uses Hardware-based Pulse-Width Modulation (PWM).
 
-In the previous article ([Pulse-Width Modulation (PWM) - Theory]({% link _posts/2021-05-22-PWM.md %})), we reviewed why PWM works. Let's now take a look at how we can get PWM working on Raspberry Pi using JavaScript. The project described here today uses Hardware-based PWM via the [RPIO](https://www.npmjs.com/package/rpio) library.
+In the previous article ([Pulse-Width Modulation (PWM) - Theory]({% link _posts/2021-05-29-PWM.md %})), we reviewed why PWM works. Let's now take a look at how we can get PWM working on Raspberry Pi using JavaScript. The project described here today uses Hardware-based PWM via the [RPIO](https://www.npmjs.com/package/rpio) library.
 
 # How does the project work?
 
