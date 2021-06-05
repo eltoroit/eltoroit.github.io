@@ -5,7 +5,7 @@ published: true
 title: Analog To Digital Conversion (I<sup>2</sup>C)
 ---
 
-How can the Raspberry Pi, being all digital, read an analog signal? Use an _Analog-to-Digital Converter (ADC)_. This article discusses I<sup>2</sup>C ADCs.
+How can the Raspberry Pi, being all-digital, read an analog signal? Use an _Analog-to-Digital Converter (ADC)_. This article discusses I<sup>2</sup>C ADCs.
 
 In the last couple of articles [Pulse-Width Modulation (PWM) - Theory]({% link _posts/2021-05-29-PWM.md %}) and [Hardware-based PWM with RPIO]({% link _posts/2021-05-30-HardwarePWM-RPIO.md %}) we simulated an analog signal required to dim an LED using a digital output from the Raspberry Pi. But we were not converting a digital signal to an analog one. We were only producing a high or low value (on/off, 1/0, true/false) for a predefined amount of time, and the analog circuit believed, by averaging the values, that it was an analog signal. Today we are going to convert an analog signal to a digital one!
 
@@ -28,33 +28,43 @@ Computers, like the Raspberry Pi, work with digital signals. If you want to buil
 There are several factors you need to consider when selecting the correct ADC for your projects, including:
 
 - Interfaces:
-  - ADC chips will either use I<sup>2</sup>C (Inter-Integrated-Circuit) or SPI (Serial Peripheral Interface) bus interfaces. We are going to use the I<sup>2</sup> in this article.
-  - SPI is faster but you are limited by the number of devices the SPI bus can accept, 2 devices in the Raspberry Pi
-  - I2C is slower but you can connect many more devices to the I2C host machine as long as their addresses don't conflict.
+  - ADC chips use I<sup>2</sup>C (Inter-Integrated-Circuit) or SPI (Serial Peripheral Interface) bus interfaces.
+  - In this article, we use the board provided in the Frenove kit. It's called ADS7830 DAC, and it uses an I<sup>2</sup>C interface.
+  - SPI is faster than I<sup>2</sup>C, but it limits the number of devices the bus can accept. For the Raspberry Pi, the limit is 2 devices.
+  - I<sup>2</sup>C is slower than SPI, but you can connect many more devices to the I<sup>2</sup>C host machine as long as their addresses don't conflict.
 - Number of channels:
   - The number of voltage inputs you can connect to the boards.
-  - The ADS7830 DAC we are going to use in the project today (came with the freenove kit) has 8 channels.
+  - The ADS7830 DAC we are using today has 8 channels.
 - Sensitivity
   - Measured by its bit rate.
-  - A higher bit rate means that the chip has a higher resolution for measuring the input voltage but this comes at the expensive of the speed of the readings.
+  - A higher bit rate means that the chip has a higher resolution for measuring the input voltage, but this comes at the expense of the speed of the readings.
   - The ADS7830 DAC has an 8-bit resolution, which means it can have 2<sup>8</sup> (256) values from 0x00 to 0xFF.
 - Sample Rate
   - The speed at which the ADC chip can sample and report the input voltage.
   - The ADS7830 DAC has a sampling rate of 70kHz.
 
-This information is extracted from the [datasheet](https://www.ti.com/lit/ds/symlink/ads7830.pdf)
+This information comes from this [datasheet](https://www.ti.com/lit/ds/symlink/ads7830.pdf).
 
 # Project
 
-This is the project that is built on the book, and we are going to start with that.
+For the first phase of the project, we are going to use the project from the book.
 
 ![ADS7830 Circuit](/assets/blog/2021-06-05/ADC7830.png)
 
-First we have to configure the Raspberry Pi to enable the I<sup>2</sup>C interface. For that type `sudo raspi config`, then select the `Interfacing Options` and `I2C`. Say `Yes` when you are aasked if you want to enable I<sup>2</sup>C. When done, just close the raspi-config tool and execute this commmand: `i2cdetect -y 1` and you should see a table like this:
+First, we have to configure the Raspberry Pi to enable the I<sup>2</sup>C interface.
+
+- Type `sudo raspi config` on the terminal window.
+- Select `Interfacing Options`.
+- Select `I2C`.
+- Answer `Yes` when asked to enable I<sup>2</sup>C.
+- Close the configuration tool
+- Execute this command: `i2cdetect -y 1`
+
+You should see a table like this:
 
 ![I2C Table](/assets/blog/2021-06-05/I2C_Table.png)
 
-That is great, I2C is working and we know the address that our ADC is going to be using (0x4b).
+That is great, I<sup>2</sup>C is working, and we know the address that our ADC is going to be using (0x4b).
 
 # Project
 
