@@ -5,9 +5,11 @@
 
 ## Website
 
-- builder: https://jekyllrb.com/
-  - `bundle exec jekyll serve --watch --port 3000 --unpublished --drafts`
-  - [Template](https://github.com/pages-themes/architect)
+- builder:
+  - Tool: https://jekyllrb.com/
+    - `bundle exec jekyll serve --watch --port 3000 --unpublished --drafts`
+    - [Template](https://github.com/pages-themes/architect)
+  - Test `bundle exec jekyll doctor`
 
 It takes at least one minute after pushing for the changes to be published to pages ;-)
 
