@@ -13,8 +13,17 @@ plugins:
   - jekyll-feed
   - jekyll-sitemap
   - jekyll-seo-tag
-url: "https://eltoroit.github.io"
 # Search Engine
 title: ELTOROIT's Journey
+url: "https://eltoroit.github.io"
 tagline: Diary of a developer learning electronics
-description: Diary of a Salesforce + Node.js developer learning electronics IoT, primarily on . Join me, as I share my experiences in this fantastic world. Let's learn together!
+description: Diary of a Salesforce + Node.js developer learning electronics and IoT primarily using Raspberry Pi. Join me, as I share my experiences in this fantastic world. Let's learn together! Tutorials, demos, explanations. Understand how Raspberry Pi, Node.js, IoT, Salesforce, and other technologies can interact together.
+author:
+  twitter: eltoroit
+social:
+  name: Andres Perez (ELTOROIT)
+  links:
+    - https://www.linkedin.com/in/eltoroit
+    - https://twitter.com/eltoroit
+    - https://github.com/eltoroit
+    - https://trailblazer.me/id/eltoroit
