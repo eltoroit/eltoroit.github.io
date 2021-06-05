@@ -27,13 +27,27 @@
 <body>
     <header>
         <div class="inner">
-            <a href="{{ '/' | absolute_url }}">
-                <h1 style="width: unset; text-align: center;">ELTOROIT's Journey</h1>
-            </a>
-            <h2 style="width: unset; text-align: center;">Diary of a Salesforce developer on the magical world of IoT
-                and electronics. Join me as I share my experiences. Let's learn together!</h2>
-            <!--<br /><h2 style="width: unset; text-align: center; font-size: 21px; color: #b6d4e6;"><i>When you learn...
-                    teach.<br />When you get... give. &mdash; Maya Angelou</i></h2> -->
+            <table style="border: 0px;">
+                <tr style="border: 0px;">
+                    <td rowspan="2" style="border: 0px;">
+                        <img src="/assets/images/Logo138x150.png" />
+                    </td>
+                    <td style="border: 0px;">
+                        <a href="{{ '/' | absolute_url }}">
+                            <h1 style="width: unset; text-align: center;">ELTOROIT's Journey</h1>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border: 0px;">
+                        <h2 style="width: unset; text-align: center;">Diary of a Salesforce developer on the magical
+                            world of electronics. Join me as I share my experiences.<br /> Let's learn together!
+                        </h2>
+                        <!--<br /><h2 style="width: unset; text-align: center; font-size: 21px; color: #b6d4e6;"><i>When you learn...
+                                teach.<br />When you get... give. &mdash; Maya Angelou</i></h2> -->
+                    </td>
+                </tr>
+            </table>
         </div>
     </header>
 
@@ -42,6 +56,38 @@
             <section id="main-content">
                 <h1 class="no-before">{{ page.title }}</h1>
                 {{ content }}
+
+                {% if page.comments %}
+                <hr />
+                <div class="page__comments">
+                    <h3 class="no-before">Please leave a comment</h3>
+                    <section id="utterances-comments">
+                        <div class="utterances">
+                            <script src="https://utteranc.es/client.js" repo="eltoroit/eltoroit.github.io"
+                                issue-term="title" theme="github-light" crossorigin="anonymous" async></script>
+                        </div>
+                    </section>
+                    <p class="small">
+                        Comments are powered by <a href="https://utteranc.es/">Utterances</a>. A <a
+                            href="https://github.com/">GitHub account</a> is required to comment. <i>Comments are
+                            moderated.</i> <b>Be respectful. No swearing or inflammatory language. No spam.</b>
+                    </p>
+                    <p class="small">
+                        <i>I reserve the right to delete any inappropriate comments.</i> All comments for all pages
+                        <a href="https://github.com/eltoroit/eltoroit.github.io/issues"> can be viewed and
+                            <i>searched</i> online here</a>.
+                    </p>
+                    <p class="small">
+                        <b>To edit or delete your comment:</b>
+                    <ol>
+                        <li>Click the "Comments" link</li>
+                        <li>Find your comment on this GitHub page and click the 3 dots in the top-right</li>
+                        <li>Click "Edit" or "Delete". Editing or adding a comment from the GitHub page also gives you a
+                            nicer editor.</li>
+                    </ol>
+                    </p>
+                </div>
+                {% endif %}
             </section>
 
             <aside id="sidebar">
