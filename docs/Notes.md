@@ -19,11 +19,12 @@ It takes at least one minute after pushing for the changes to be published to pa
 
 ## Simulate
 
-- Fritzing: https://fritzing.org/ (Computer app)
-- Pretty Simulator: https://dcaclab.com/en/lab
-- Fancy circuits: https://www.circuitlab.com/
-  - Includes eBook
-- Nice: https://everycircuit.com/app/
+- https://everycircuit.com/app/
+  - Others
+    - Fritzing: https://fritzing.org/ (Computer app)
+    - Pretty Simulator: https://dcaclab.com/en/lab
+    - Fancy circuits: https://www.circuitlab.com/
+      - Includes eBook
 
 ## Draw
 
