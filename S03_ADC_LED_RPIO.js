@@ -10,7 +10,7 @@ class ADS7830 {
         rpio.i2cBegin();
     }
 
-    async readValue(channel) {
+    async readValue() {
         rpio.i2cSetSlaveAddress(this.ADDRESS);
         rpio.i2cSetBaudRate(100e3); // 100 KHz
 
@@ -48,7 +48,7 @@ class LedRPIO {
     }
 
     shutdown(isLast = false) {
-        rpio.pwmSetData(this._pin, 0);
+        rpio.close(this._pin, rpio.PIN_RESET);
         if (isLast) {
             rpio.exit();
         }
