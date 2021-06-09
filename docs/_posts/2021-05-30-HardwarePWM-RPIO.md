@@ -29,7 +29,11 @@ BTW, The 220 Ω resistor is needed to protect the LED. When I build this circuit
 
 # Hardware-based PWM (RPIO)
 
-> Hardware-based PWM does not require CPU resources, and it has a more precise time control. Even if the CPU is busy, the Raspberry Pi updates the correct values at the correct time. But on the Raspberry Pi 4, we only have four pins that we can use: GPIO18 (pin 12), GPIO12 (pin 32), GPIO13 (pin 33), and GPIO19 (pin 35). Suppose we were building a circuit with an RGB LED (which requires 3 PWM pins - one for each colour) and one switch; we would run out of pins!
+> Hardware-based PWM does not require CPU resources, and it has a more precise time control. Even if the CPU is busy, the Raspberry Pi updates the correct values at the correct time. But on the Raspberry Pi 4, we only have four pins that we can use: GPIO18 (pin 12), GPIO12 (pin 32), GPIO13 (pin 33), and GPIO19 (pin 35).
+
+<p><s>Suppose we were building a circuit with an RGB LED (which requires 3 PWM pins - one for each colour) and one switch; we would run out of pins!</s></p>_UPDATE_ [Bogusław Kempny](http://kempny.stanpol.com.pl/index_en.php) has indicated, on a [comment for this article](https://github.com/eltoroit/eltoroit.github.io/issues/2), that the Raspberry Pi only has 2 channels. Pins GPIO12 (pin 32) and GPIO18 (pin 12) share channel 0, and pins GPIO13 (pin 33) and GPIO19 (pin 35) share channel 1.
+
+That means that we can't drive an RGB LED because it requires three PWM signals! (one for each colour). In that case, we may want to consider using [Sofware-based PWM with PIGPIO]({% link _posts/2021-06-04-SoftwarePWM-PIGPIO.md %})
 
 The code below uses Hardware-based PWM via the [RPIO](https://www.npmjs.com/package/rpio) npm package.
 
