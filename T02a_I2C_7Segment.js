@@ -6,85 +6,31 @@ class HT16K33 {
     BAUD_RATE = 100e3; // 100KHz
 
     constructor() {
-        this.write_buffer = [];
-        this.current_array = [];
-
         rpio.i2cBegin();
-        rpio.i2cSetSlaveAddress(this.ADDRESS);
-        rpio.i2cSetBaudRate(this.BAUD_RATE);
+        rpio.i2cSetSlaveAddress(this.ADDRESS); // Address this chip
+        rpio.i2cSetBaudRate(this.BAUD_RATE); //  I2C protocol clock speeds: Standard-mode 
+        rpio.i2cWrite(Buffer.from([(0x20 | 0x01)])); // Turn on the oscillator (Page 10)
+        rpio.i2cWrite(Buffer.from([(0x80 | 0x01 | 0x00)])); // Turn display on, and no blinking (Page 11)
+        this.setBrightness(this.BRIGHTNESS); // Set display to full brightness (Page 15)
 
-        // Turn on the oscillator
-        rpio.i2cWrite(Buffer.from([(0x20 | 0x01)]));
-
-        // Turn display on
-        rpio.i2cWrite(Buffer.from([(0x80 | 0x01 | 0x00)]));
-
-        // Initial Clear
+        // Clear RAM
         for (var x = 0; x < 16; x++) {
-            let tmp = Buffer.from([x, 0]);
-            rpio.i2cWrite(tmp);
+            rpio.i2cWrite(Buffer.from([x, 0]));
         }
-
-        // Set display to full brightness
-        this.setBrightness(this.BRIGHTNESS);
     }
-
 
     setBrightness(b) {
-        if (b > 15) b = 15;
-        if (b < 0) b = 0;
-        rpio.i2cWrite(Buffer.from([(0xE0 | b)]));
+        b = Math.min(Math.max(0, b), 15); // [0 ~ 15]
+        rpio.i2cWrite(Buffer.from([(0xE0 | b)])); // (Page 15)
     }
 
-    setLED(y, x, value) {
-        var led = y * 16 + ((x + 7) % 8);
-
-        var pos = Math.floor(led / 8);
-        var offset = led % 8;
-
-
-        if (value)
-            this.write_buffer[pos] |= (1 << offset);
-        else
-            this.write_buffer[pos] &= ~(1 << offset);
-    }
-
-    writeArray(_array) {
-
-        this.current_array = _array;
-        this.clearBuffer();
-
-        var x = 0;
-        var y = 0;
-
-        for (var i in _array) {
-            this.setLED(y, x, _array[i]);
-
-            x++;
-
-            if (x >= 8) {
-                y++;
-                x = 0;
-            }
-
-        }
-
-        this.writeBuffer();
-    }
-
-    writeBuffer() {
-        for (var i in this.write_buffer) {
-            let x = this.write_buffer[i];
-            console.log(`i: ${i} => ${x}`);
-            let y = Buffer.from([i, x]);
-            rpio.i2cWrite(y);
-        }
-    }
-
-    clearBuffer() {
-        for (var i in this.write_buffer) {
-            this.write_buffer[i] = 0;
-        }
+    writeData(data) {
+        data.forEach((digits, position) => {
+            digits.unshift(position << 1);
+            let b = Buffer.from(digits);
+            console.log(b);
+            rpio.i2cWrite(b);
+        });
     }
 }
 
@@ -97,7 +43,7 @@ class SEVEN_SEGMENT {
     _format(numberOrStringOrArray) {
         const stringRep = Array.isArray(numberOrStringOrArray) ? numberOrStringOrArray.join('') : numberOrStringOrArray.toString();
         const chars = stringRep.split('');
-        const bitmap = chars.map(this._charToSevenSegment);
+        const bitmap = chars.map(this._charToSevenSegment.bind(this));
         const dotIndicies = chars.map((value, i) => value === '.' ? i : -1).filter(value => value != -1);
         dotIndicies.forEach(value => delete bitmap[value - 1]);
         return this._fixBitmap(bitmap, chars.indexOf(':') === -1);
@@ -118,7 +64,6 @@ class SEVEN_SEGMENT {
         ];
 
         const MINUS = 0x40;
-
         if (char === '.') {
             return [this._charToSevenSegment(array[i - 1])[0] | 1 << 7, 0];
         } else if (char === ':') {
@@ -127,7 +72,7 @@ class SEVEN_SEGMENT {
             return [MINUS, 0];
         } else if (char === ' ') {
             return [0, 0];
-        } else {
+        } else if (typeof Number(char) === 'number') {
             return [NUMBERS[Number(char)], 0];
         }
     }
@@ -151,42 +96,30 @@ class SEVEN_SEGMENT {
 
 }
 
-let randomBits;
-// randomBits = [
-//     /*
-//     DP A  B  C  D  E  F  G
-//     */
-//     0, 0, 1, 1, 0, 0, 0, 0, // MSB A
-//     0, 1, 1, 0, 1, 1, 0, 1,
-//     0, 0, 1, 0, 0, 0, 0, 0, // Dots for hour
-//     0, 1, 1, 1, 1, 0, 0, 1,
-//     1, 0, 1, 1, 0, 0, 1, 1  // LSB G
-// ];
-
-randomBits = [
-    0, 0, 1, 1, 1, 1, 0, 0,
-    0, 1, 0, 0, 0, 0, 1, 0,
-    1, 0, 1, 0, 0, 1, 0, 1,
-    1, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 1, 0, 0, 1, 0, 1,
-    1, 0, 0, 1, 1, 0, 0, 1,
-    0, 1, 0, 0, 0, 0, 1, 0,
-    0, 0, 1, 1, 1, 1, 0, 0,
-];
-
-let matrix = new HT16K33();
-matrix.writeArray(randomBits);
-
 let tmp;
-tmp = SEVEN_SEGMENT.format("1234");
-debugger;
+let matrix = new HT16K33();
+
+let numbers = "   0123456789   ";
+for (let i = 0; i < numbers.length; i++) {
+    if (i > 0) rpio.msleep(100);
+    tmp = SEVEN_SEGMENT.format(numbers.substr(i, 4));
+    matrix.writeData(tmp);
+}
 
 
-// tmp = SEVEN_SEGMENT.format("1.234");
-// tmp = SEVEN_SEGMENT.format("23:19");
-// tmp = SEVEN_SEGMENT.format("-678");
-// tmp = SEVEN_SEGMENT.format(1234);
-// tmp = SEVEN_SEGMENT.format(1.234);
-// // tmp = SEVEN_SEGMENT.format(23:19);
-// tmp = SEVEN_SEGMENT.format(-678);
-// tmp = SEVEN_SEGMENT.format(["1", "2", "3", "4"]);
+
+tmp = SEVEN_SEGMENT.format("1.234"); matrix.writeData(tmp); rpio.msleep(1000);
+tmp = SEVEN_SEGMENT.format("12.34"); matrix.writeData(tmp); rpio.msleep(1000);
+tmp = SEVEN_SEGMENT.format("12:34"); matrix.writeData(tmp); rpio.msleep(1000);
+tmp = SEVEN_SEGMENT.format("123.4"); matrix.writeData(tmp); rpio.msleep(1000);
+tmp = SEVEN_SEGMENT.format("1234."); matrix.writeData(tmp); rpio.msleep(1000);
+tmp = SEVEN_SEGMENT.format("23:19"); matrix.writeData(tmp); rpio.msleep(1000);
+tmp = SEVEN_SEGMENT.format("-678"); matrix.writeData(tmp); rpio.msleep(1000);
+tmp = SEVEN_SEGMENT.format(1234); matrix.writeData(tmp); rpio.msleep(1000);
+tmp = SEVEN_SEGMENT.format(12.34); matrix.writeData(tmp); rpio.msleep(1000);
+// tmp = SEVEN_SEGMENT.format(23:19);
+tmp = SEVEN_SEGMENT.format(-888); matrix.writeData(tmp); rpio.msleep(1000);
+tmp = SEVEN_SEGMENT.format(["1", "2", ":", "3", "4"]); matrix.writeData(tmp); rpio.msleep(1000);
+tmp = SEVEN_SEGMENT.format("8.8.:8.8."); matrix.writeData(tmp); rpio.msleep(1000);
+tmp = SEVEN_SEGMENT.format(""); matrix.writeData(tmp); rpio.msleep(1000);
+
