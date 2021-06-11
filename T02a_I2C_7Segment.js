@@ -25,89 +25,103 @@ class HT16K33 {
     }
 
     writeData(data) {
-        data.forEach((digits, position) => {
-            digits.unshift(position << 1);
-            let b = Buffer.from(digits);
-            console.log(b);
+        data.forEach((digit, position) => {
+            let b = Buffer.from([position << 1, digit]);
             rpio.i2cWrite(b);
         });
     }
 }
 
 class SEVEN_SEGMENT {
-    static format(numberOrStringOrArray) {
+    static format(value) {
         let tmp = new SEVEN_SEGMENT();
-        return tmp._format(numberOrStringOrArray);
+        return tmp._format(value);
     }
 
-    _format(numberOrStringOrArray) {
-        const stringRep = Array.isArray(numberOrStringOrArray) ? numberOrStringOrArray.join('') : numberOrStringOrArray.toString();
+    _format(value) {
+        const bitmap = [];
+        const stringRep = Array.isArray(value) ? value.join('') : value.toString();
         const chars = stringRep.split('');
-        const bitmap = chars.map(this._charToSevenSegment.bind(this));
-        const dotIndicies = chars.map((value, i) => value === '.' ? i : -1).filter(value => value != -1);
-        dotIndicies.forEach(value => delete bitmap[value - 1]);
-        return this._fixBitmap(bitmap, chars.indexOf(':') === -1);
+        chars.forEach((char, idx, array) => {
+            if (char === '.') {
+                let previousDigit = bitmap[bitmap.length - 1];
+                bitmap[bitmap.length - 1] = previousDigit | (1 << 7);
+            } else if (char === ':') {
+                // Ignore it
+            } else {
+                bitmap.push(this._charToSevenSegment(char, idx, array));
+            }
+        });
+        return this._fixBits(bitmap, chars.indexOf(':') !== -1);
     }
 
     _charToSevenSegment(char, i, array) {
-        const NUMBERS = [
-            0x3F, // 0
-            0x06, // 1
-            0x5B, // 2
-            0x4F, // 3
-            0x66, // 4
-            0x6D, // 5
-            0x7D, // 6
-            0x07, // 7
-            0x7F, // 8
-            0x6F  // 9
-        ];
-
-        const MINUS = 0x40;
-        if (char === '.') {
-            return [this._charToSevenSegment(array[i - 1])[0] | 1 << 7, 0];
-        } else if (char === ':') {
-            return undefined;
-        } else if (char === '-') {
-            return [MINUS, 0];
-        } else if (char === ' ') {
-            return [0, 0];
-        } else if (typeof Number(char) === 'number') {
-            return [NUMBERS[Number(char)], 0];
-        }
-    }
-
-    _fixBitmap(bitmap, switchColonOff) {
-        let newBitmap = bitmap
-            .filter(value => value !== undefined)
-            .map(num => num);
-
-        for (var i = newBitmap.length; i < 4; i++) {
-            newBitmap.unshift([0, 0]);
+        const segments = {
+            a: 0x01,
+            b: 0x02,
+            c: 0x04,
+            d: 0x08,
+            e: 0x10,
+            f: 0x20,
+            g: 0x40,
+            H: 0x76,
+            E: 0x79,
+            L: 0x38,
+            0: 0x3F,
+            1: 0x06,
+            2: 0x5B,
+            3: 0x4F,
+            4: 0x66,
+            5: 0x6D,
+            6: 0x7D,
+            7: 0x07,
+            8: 0x7F,
+            9: 0x6F,
+            "-": 0x40,
+            " ": 0x00
         }
 
-        if (switchColonOff) {
-            newBitmap.splice(2, 0, [0, 0]);
+        if (char in segments) {
+            return segments[char];
         } else {
-            newBitmap.splice(2, 0, [0x02, 0]);
+            return 0;
         }
-        return newBitmap;
     }
 
+    _fixBits(bitmap, hasColon) {
+        for (let i = bitmap.length; i < 4; i++) {
+            bitmap.unshift(0);
+        }
+        bitmap.splice(2, 0, hasColon ? 0x02 : 0);
+        return bitmap;
+    }
 }
 
 let tmp;
+let numbers;
 let matrix = new HT16K33();
 
-let numbers = "   0123456789   ";
+debugger;
+numbers = "   HELL0 - 0123456789   ";
 for (let i = 0; i < numbers.length; i++) {
-    if (i > 0) rpio.msleep(100);
+    if (i > 0) rpio.msleep(250);
     tmp = SEVEN_SEGMENT.format(numbers.substr(i, 4));
     matrix.writeData(tmp);
 }
 
+numbers = "abcdefg";
+for (let j = 0; j < 2; j++) {
+    for (let i = 0; i < 7; i++) {
+        if (i > 0) rpio.msleep(250);
+        tmp = SEVEN_SEGMENT.format(numbers.substr(i, 1).repeat(4));
+        matrix.writeData(tmp);
+    }
+}
 
-
+tmp = SEVEN_SEGMENT.format("1"); matrix.writeData(tmp); rpio.msleep(1000);
+tmp = SEVEN_SEGMENT.format("12"); matrix.writeData(tmp); rpio.msleep(1000);
+tmp = SEVEN_SEGMENT.format("123"); matrix.writeData(tmp); rpio.msleep(1000);
+tmp = SEVEN_SEGMENT.format("1234"); matrix.writeData(tmp); rpio.msleep(1000);
 tmp = SEVEN_SEGMENT.format("1.234"); matrix.writeData(tmp); rpio.msleep(1000);
 tmp = SEVEN_SEGMENT.format("12.34"); matrix.writeData(tmp); rpio.msleep(1000);
 tmp = SEVEN_SEGMENT.format("12:34"); matrix.writeData(tmp); rpio.msleep(1000);
@@ -121,5 +135,15 @@ tmp = SEVEN_SEGMENT.format(12.34); matrix.writeData(tmp); rpio.msleep(1000);
 tmp = SEVEN_SEGMENT.format(-888); matrix.writeData(tmp); rpio.msleep(1000);
 tmp = SEVEN_SEGMENT.format(["1", "2", ":", "3", "4"]); matrix.writeData(tmp); rpio.msleep(1000);
 tmp = SEVEN_SEGMENT.format("8.8.:8.8."); matrix.writeData(tmp); rpio.msleep(1000);
+tmp = SEVEN_SEGMENT.format(""); matrix.writeData(tmp); rpio.msleep(1000);
+
+for (let i = 9999; i > 0; i -= 3) {
+    tmp = SEVEN_SEGMENT.format(i);
+    if (i > 0) {
+        matrix.writeData(tmp);
+    }
+    // rpio.msleep(1);
+}
+
 tmp = SEVEN_SEGMENT.format(""); matrix.writeData(tmp); rpio.msleep(1000);
 
