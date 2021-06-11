@@ -6,7 +6,7 @@
 		{
 			"label": "ELTOROIT PushWhenBuild",
 			"type": "shell",
-			"command": "sudo node T02a_I2C_7Segment.js",
+			"command": "sudo node  T02a_I2C_7Segment.js",
 			"group": {
 				"kind": "build",
 				"isDefault": true

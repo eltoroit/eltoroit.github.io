@@ -2,10 +2,10 @@ const rpio = require('rpio');
 
 class HT16K33 {
     ADDRESS = 0x70;
-    BAUD_RATE = 10e3;
+    BRIGHTNESS = 15;
+    BAUD_RATE = 100e3; // 100KHz
 
     constructor() {
-        this.brightness = 15;
         this.write_buffer = [];
         this.current_array = [];
 
@@ -17,23 +17,22 @@ class HT16K33 {
         rpio.i2cWrite(Buffer.from([(0x20 | 0x01)]));
 
         // Turn display on
-        rpio.i2cWrite(Buffer.from([(0x01 | 0x80)]));
+        rpio.i2cWrite(Buffer.from([(0x80 | 0x01 | 0x00)]));
 
         // Initial Clear
         for (var x = 0; x < 16; x++) {
-            rpio.i2cWrite(Buffer.from([x, 0]));
+            let tmp = Buffer.from([x, 0]);
+            rpio.i2cWrite(tmp);
         }
 
-        // Set display to full brightness.
-        rpio.i2cWrite(Buffer.from([(0xE0 | this.brightness)]));
+        // Set display to full brightness
+        this.setBrightness(this.BRIGHTNESS);
     }
 
 
     setBrightness(b) {
-
         if (b > 15) b = 15;
         if (b < 0) b = 0;
-
         rpio.i2cWrite(Buffer.from([(0xE0 | b)]));
     }
 
@@ -51,6 +50,7 @@ class HT16K33 {
     }
 
     writeArray(_array) {
+
         this.current_array = _array;
         this.clearBuffer();
 
@@ -72,40 +72,12 @@ class HT16K33 {
         this.writeBuffer();
     }
 
-    writeAnimation(_array, speed) {
-        var self = this;
-        var old_buffer = this.write_buffer.slice();
-
-        for (var i in _array) {
-            self.writeAnimation2(i, _array[i], speed);
-        }
-
-        setTimeout(function () {
-
-            self.clearBuffer();
-            self.writeBuffer();
-
-        }, _array.length * speed + speed);
-
-        setTimeout(function () {
-
-            self.write_buffer = old_buffer.slice();
-            self.writeBuffer();
-
-        }, _array.length * speed + 1000);
-    }
-
-    writeAnimation2(i, data, speed) {
-        var self = this;
-
-        setTimeout(function () {
-            self.writeArray(data);
-        }, speed * i);
-    }
-
     writeBuffer() {
         for (var i in this.write_buffer) {
-            rpio.i2cWrite(Buffer.from([i, this.write_buffer[i]]));
+            let x = this.write_buffer[i];
+            console.log(`i: ${i} => ${x}`);
+            let y = Buffer.from([i, x]);
+            rpio.i2cWrite(y);
         }
     }
 
@@ -116,14 +88,105 @@ class HT16K33 {
     }
 }
 
+class SEVEN_SEGMENT {
+    static format(numberOrStringOrArray) {
+        let tmp = new SEVEN_SEGMENT();
+        return tmp._format(numberOrStringOrArray);
+    }
+
+    _format(numberOrStringOrArray) {
+        const stringRep = Array.isArray(numberOrStringOrArray) ? numberOrStringOrArray.join('') : numberOrStringOrArray.toString();
+        const chars = stringRep.split('');
+        const bitmap = chars.map(this._charToSevenSegment);
+        const dotIndicies = chars.map((value, i) => value === '.' ? i : -1).filter(value => value != -1);
+        dotIndicies.forEach(value => delete bitmap[value - 1]);
+        return this._fixBitmap(bitmap, chars.indexOf(':') === -1);
+    }
+
+    _charToSevenSegment(char, i, array) {
+        const NUMBERS = [
+            0x3F, // 0
+            0x06, // 1
+            0x5B, // 2
+            0x4F, // 3
+            0x66, // 4
+            0x6D, // 5
+            0x7D, // 6
+            0x07, // 7
+            0x7F, // 8
+            0x6F  // 9
+        ];
+
+        const MINUS = 0x40;
+
+        if (char === '.') {
+            return [this._charToSevenSegment(array[i - 1])[0] | 1 << 7, 0];
+        } else if (char === ':') {
+            return undefined;
+        } else if (char === '-') {
+            return [MINUS, 0];
+        } else if (char === ' ') {
+            return [0, 0];
+        } else {
+            return [NUMBERS[Number(char)], 0];
+        }
+    }
+
+    _fixBitmap(bitmap, switchColonOff) {
+        let newBitmap = bitmap
+            .filter(value => value !== undefined)
+            .map(num => num);
+
+        for (var i = newBitmap.length; i < 4; i++) {
+            newBitmap.unshift([0, 0]);
+        }
+
+        if (switchColonOff) {
+            newBitmap.splice(2, 0, [0, 0]);
+        } else {
+            newBitmap.splice(2, 0, [0x02, 0]);
+        }
+        return newBitmap;
+    }
+
+}
+
 let randomBits;
+// randomBits = [
+//     /*
+//     DP A  B  C  D  E  F  G
+//     */
+//     0, 0, 1, 1, 0, 0, 0, 0, // MSB A
+//     0, 1, 1, 0, 1, 1, 0, 1,
+//     0, 0, 1, 0, 0, 0, 0, 0, // Dots for hour
+//     0, 1, 1, 1, 1, 0, 0, 1,
+//     1, 0, 1, 1, 0, 0, 1, 1  // LSB G
+// ];
+
 randomBits = [
-    0, 0, 0, 1, 0, 0, 0, 0,
-    0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 1, 0,
-    1, 0, 0, 0, 0, 0, 0, 1
+    0, 0, 1, 1, 1, 1, 0, 0,
+    0, 1, 0, 0, 0, 0, 1, 0,
+    1, 0, 1, 0, 0, 1, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 1, 0, 0, 1, 0, 1,
+    1, 0, 0, 1, 1, 0, 0, 1,
+    0, 1, 0, 0, 0, 0, 1, 0,
+    0, 0, 1, 1, 1, 1, 0, 0,
 ];
 
 let matrix = new HT16K33();
 matrix.writeArray(randomBits);
+
+let tmp;
+tmp = SEVEN_SEGMENT.format("1234");
+debugger;
+
+
+// tmp = SEVEN_SEGMENT.format("1.234");
+// tmp = SEVEN_SEGMENT.format("23:19");
+// tmp = SEVEN_SEGMENT.format("-678");
+// tmp = SEVEN_SEGMENT.format(1234);
+// tmp = SEVEN_SEGMENT.format(1.234);
+// // tmp = SEVEN_SEGMENT.format(23:19);
+// tmp = SEVEN_SEGMENT.format(-678);
+// tmp = SEVEN_SEGMENT.format(["1", "2", "3", "4"]);
