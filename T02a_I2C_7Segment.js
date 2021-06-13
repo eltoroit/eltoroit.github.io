@@ -102,6 +102,11 @@ let numbers;
 let matrix = new HT16K33();
 
 debugger;
+// tmp = SEVEN_SEGMENT.format("1:"); matrix.writeData(tmp); rpio.msleep(1000);
+// tmp = SEVEN_SEGMENT.format("1..2...3..."); matrix.writeData(tmp); rpio.msleep(1000);
+// tmp = SEVEN_SEGMENT.format(":1"); matrix.writeData(tmp); rpio.msleep(1000);
+// tmp = SEVEN_SEGMENT.format("1::"); matrix.writeData(tmp); rpio.msleep(1000);
+
 numbers = "   HELL0 - 0123456789   ";
 for (let i = 0; i < numbers.length; i++) {
     if (i > 0) rpio.msleep(250);
