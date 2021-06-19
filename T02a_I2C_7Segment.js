@@ -64,9 +64,15 @@ class SEVEN_SEGMENT {
             e: 0x10,
             f: 0x20,
             g: 0x40,
-            H: 0x76,
+            A: 0x77,
+            C: 0x39,
             E: 0x79,
+            F: 0x71,
+            H: 0x76,
+            J: 0x0E,
             L: 0x38,
+            P: 0x73,
+            U: 0x3E,
             0: 0x3F,
             1: 0x06,
             2: 0x5B,
@@ -102,10 +108,10 @@ let numbers;
 let matrix = new HT16K33();
 
 debugger;
-// tmp = SEVEN_SEGMENT.format("1:"); matrix.writeData(tmp); rpio.msleep(1000);
-// tmp = SEVEN_SEGMENT.format("1..2...3..."); matrix.writeData(tmp); rpio.msleep(1000);
-// tmp = SEVEN_SEGMENT.format(":1"); matrix.writeData(tmp); rpio.msleep(1000);
-// tmp = SEVEN_SEGMENT.format("1::"); matrix.writeData(tmp); rpio.msleep(1000);
+tmp = SEVEN_SEGMENT.format("1:"); matrix.writeData(tmp); rpio.msleep(1000);
+tmp = SEVEN_SEGMENT.format("1..2...3..."); matrix.writeData(tmp); rpio.msleep(1000);
+tmp = SEVEN_SEGMENT.format(":1"); matrix.writeData(tmp); rpio.msleep(1000);
+tmp = SEVEN_SEGMENT.format("1::"); matrix.writeData(tmp); rpio.msleep(1000);
 
 numbers = "   HELL0 - 0123456789   ";
 for (let i = 0; i < numbers.length; i++) {
@@ -114,11 +120,12 @@ for (let i = 0; i < numbers.length; i++) {
     matrix.writeData(tmp);
 }
 
-numbers = "abcdefg";
+numbers = "abcdefgACEFHJLPU0123456789- ";
 for (let j = 0; j < 2; j++) {
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < numbers.length; i++) {
         if (i > 0) rpio.msleep(250);
-        tmp = SEVEN_SEGMENT.format(numbers.substr(i, 1).repeat(4));
+        let char = numbers.substr(i, 1);
+        tmp = SEVEN_SEGMENT.format(char.repeat(4));
         matrix.writeData(tmp);
     }
 }
@@ -151,4 +158,3 @@ for (let i = 9999; i > 0; i -= 3) {
 }
 
 tmp = SEVEN_SEGMENT.format(""); matrix.writeData(tmp); rpio.msleep(1000);
-
