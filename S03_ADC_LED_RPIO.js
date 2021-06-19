@@ -10,7 +10,7 @@ class ADS7830 {
         rpio.i2cBegin();
     }
 
-    async readValue() {
+    readValue() {
         rpio.i2cSetSlaveAddress(this.ADDRESS);
         rpio.i2cSetBaudRate(100e3); // 100 KHz
 
@@ -79,8 +79,8 @@ class AppLogic {
     }
 
     mainLoop() {
-        setInterval(async () => {
-            let value = await this.ads7830.readValue();
+        setInterval(() => {
+            let value = this.ads7830.readValue();
             this.led.writeValue(value / 255);
             console.log(`Value read: ${value}`);
         }, 20);
