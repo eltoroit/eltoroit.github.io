@@ -30,7 +30,7 @@
             <table style="border: 0px;">
                 <tr style="border: 0px;">
                     <td rowspan="2" style="border: 0px;">
-                        <img src="/assets/images/Logo138x150.png" />
+                        <img data-id="logo" src="/assets/images/Logo138x150.png" />
                     </td>
                     <td style="border: 0px;">
                         <a href="{{ '/' | absolute_url }}">
@@ -146,6 +146,13 @@
                 a.target = "_blank";
             } else {
                 a.style.fontWeight = "bold";
+            }
+        })
+
+        let images = Array.from(document.querySelectorAll("img"));
+        images.forEach(img => {
+            if (img.attributes["data-id"] !== "logo") {
+                img.parentElement.style.textAlign = "center"
             }
         })
     });

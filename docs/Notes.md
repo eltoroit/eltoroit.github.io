@@ -41,7 +41,7 @@ It takes at least one minute after pushing for the changes to be published to pa
 ## Common Links
 
 - [RPIO](https://www.npmjs.com/package/rpio)
-- [PIGPIO](https://www.npmjs.com/package/pigpio)
+- [PIGPIO](https://www.npmjs.com/package/pigpio) <<<< BEST!
 
 ## HTML
 
