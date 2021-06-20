@@ -11,7 +11,7 @@ This project builds a simple circuit that uses Hardware-based Pulse-Width Modula
 >
 > - Read [Pulse-Width Modulation (PWM) - Theory]({% link _posts/2021-05-29-PWM.md %}) to understand the theory behind
 > - Build a simple circuit with [RPIO](https://www.npmjs.com/package/rpio) using [Hardware-based PWM with RPIO]({% link _posts/2021-05-30-HardwarePWM-RPIO.md %})
-> - Build a simple circuit using [PIGPIO](https://www.npmjs.com/package/pigpio) using [Sofware-based PWM with PIGPIO]({% link _posts/2021-06-04-SoftwarePWM-PIGPIO.md %})
+> - Build a simple circuit using [PIGPIO](https://www.npmjs.com/package/pigpio) using [DMA-based PWM with PIGPIO]({% link _posts/2021-06-04-DMA_PWM-PIGPIO.md %})
 
 In the previous article ([Pulse-Width Modulation (PWM) - Theory]({% link _posts/2021-05-29-PWM.md %})), we reviewed why PWM works. Let's now take a look at how we can get PWM working on Raspberry Pi using JavaScript. The project described here today uses Hardware-based PWM via the [RPIO](https://www.npmjs.com/package/rpio) library.
 
@@ -29,11 +29,11 @@ BTW, The 220 Ω resistor is needed to protect the LED. When I build this circuit
 
 # Hardware-based PWM (RPIO)
 
-> Hardware-based PWM does not require CPU resources, and it has a more precise time control. Even if the CPU is busy, the Raspberry Pi updates the correct values at the correct time. But on the Raspberry Pi 4, we only have four pins that we can use: GPIO18 (pin 12), GPIO12 (pin 32), GPIO13 (pin 33), and GPIO19 (pin 35).
+> Hardware-based PWM does not require CPU resources, and it has a more precise time control. Even if the CPU is busy, the Raspberry Pi updates the correct values at the correct time.
 
-<p><s>Suppose we were building a circuit with an RGB LED (which requires 3 PWM pins - one for each colour) and one switch; we would run out of pins!</s></p>_UPDATE_ [Bogusław Kempny](http://kempny.stanpol.com.pl/index_en.php) has indicated, on a [comment for this article](https://github.com/eltoroit/eltoroit.github.io/issues/2), that the Raspberry Pi only has 2 channels. Pins GPIO12 (pin 32) and GPIO18 (pin 12) share channel 0, and pins GPIO13 (pin 33) and GPIO19 (pin 35) share channel 1.
+_UPDATE_ [Bogusław Kempny](http://kempny.stanpol.com.pl/index_en.php) has indicated, on a [comment for this article](https://github.com/eltoroit/eltoroit.github.io/issues/2), that the Raspberry Pi only has 2 channels. Pins GPIO12 (pin 32) and GPIO18 (pin 12) share channel 0, and pins GPIO13 (pin 33) and GPIO19 (pin 35) share channel 1.
 
-That means that we can't drive an RGB LED because it requires three PWM signals! (one for each colour). In that case, we may want to consider using [Sofware-based PWM with PIGPIO]({% link _posts/2021-06-04-SoftwarePWM-PIGPIO.md %})
+That means that we can't drive an RGB LED because it requires three PWM signals! (one for each colour). In that case, we may want to consider using [DMA-based PWM with PIGPIO]({% link _posts/2021-06-04-DMA_PWM-PIGPIO.md %})
 
 The code below uses Hardware-based PWM via the [RPIO](https://www.npmjs.com/package/rpio) npm package.
 
@@ -43,7 +43,9 @@ Although this is a simple project, I have decided to write the code using two cl
 
 There are some numbers that we need to discuss:
 
-As shown on the oscilloscope in the video above, the PWM frequency (duty cycle) is 6.75 kHz or a period of 148 microseconds. This frequency does not indicate how often the data changes, which in the code above is once per second. This formula helps calculate the PWM frequency: `CLOCK / (range \* ClockDivider)` taking into consideration these values:
+As shown on the oscilloscope in the video above, the PWM frequency (duty cycle) is 6.75 kHz or a period of 148 microseconds. **NOTE:** This frequency is related to the duty cycle and does not indicate how often the data changes. In our example, the data changes every second, but this is not the frequency we discuss here.
+
+This formula helps calculate the PWM frequency: `CLOCK / (range \* ClockDivider)` taking into consideration these values:
 
 - CLOCK: The Raspberry Pi 4B has a PWM input clock that runs at 54 MHz.
 - ClockDivider: Must be a power of two, for example, 2, 4, 8, 16, 32, 64, 128, and so on up to a maximum of 1024.
