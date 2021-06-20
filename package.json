@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "i2c-bus": "^5.2.2",
     "pigpio": "^3.3.1",
     "rpio": "^2.4.2"
   }
