@@ -25,6 +25,8 @@ One notable difference with the previous project is the PWM frequency (duty cycl
 
 # DMA-based PWM (PIGPIO)
 
+![DMA - https://iosoft.blog/2020/05/25/raspberry-pi-dma-programming/](/assets/blog/2021-06-04/dma.png)
+
 > DMA-based PWM is the best of both worlds. Because it's based the DMA (Direct Memory Access) controller, which is part of the Raspberry Pi's chip (Broadcom), it has the efficiency of hardware-based PWM but you can use any GPIO pin. You are not limited to only 2 channels, you have 10 channels!
 
 The DMA (Direct Memory Access) controller can't run code (like the main chip does), but it can copy memory across peripherals by itself without consuming the central processor's time. The DMA controller has 10 different channels which can copy memory, and it runs independently of the CPU. Providing PWM via DMA frees the CPU, allowing low processor usage to drive DC motors, servos, LEDs, or any other analog device using the GPIO pins. Raspberry Pi allows you to control a total of 10 individual channels, not just 2 like hardware-based PWM.
