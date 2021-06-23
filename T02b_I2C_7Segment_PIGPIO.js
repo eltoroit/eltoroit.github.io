@@ -5,48 +5,43 @@ const { Pins } = require('./pins');
 
 class HT16K33 {
     i2c_b1 = null;
-    initialized = false;
     ADDRESS = 0x70;
-    BRIGHTNESS = 15;
-    BAUD_RATE = 100e3; // 100KHz
+    BRIGHTNESS = 1;
 
-    constructor(callback) {
-        debugger;
-        i2c.openPromisified(1)
-            .then(i2c_b1 => this.i2c_b1 = i2c_b1)
-            .then(this.initialize.bind(this))
-            .then(callback)
-            .catch(error => { throw new Error(error) })
-    }
-
-    async initialize() {
-        debugger;
-        // rpio.i2cSetBaudRate(this.BAUD_RATE);  I2C protocol clock speeds: Standard-mode 
-        this.i2c_b1.i2cWrite(this.ADDRESS, Buffer.from([(0x20 | 0x01)])); // Turn on the oscillator (Page 10)
-        this.i2c_b1.i2cWrite(this.ADDRESS, Buffer.from([(0x80 | 0x01 | 0x00)])); // Turn display on, and no blinking (Page 11)
-        // this.setBrightness(this.BRIGHTNESS); // Set display to full brightness (Page 15)
-        brightness = Math.min(Math.max(0, brightness), 15); // [0 ~ 15]
-        this.i2c_b1.i2cWrite(this.ADDRESS, Buffer.from([(0xE0 | brightness)])); // (Page 15)
-        // Clear RAM
-        for (var x = 0; x < 16; x++) {
-            this.i2c_b1.i2cWrite(this.ADDRESS, Buffer.from([x, 0]));
-        }
-        this.initialized = true;
+    static async factory() {
+        let ht16k33 = new HT16K33();
+        ht16k33.i2c_b1 = await i2c.openPromisified(1);
+        await ht16k33._writeArray([(0x20 | 0x01)]); // Turn on the oscillator (Page 10)
+        await ht16k33._writeArray([(0x80 | 0x01 | 0x00)]); // Turn display on, and no blinking (Page 11)
+        await ht16k33.setBrightness(ht16k33.BRIGHTNESS);
+        await ht16k33.clearDisplay();
+        return ht16k33;
     }
 
     async writeData(data) {
-        if (this.initialized) {
-            debugger;
-            data.forEach((digit, position) => {
-                let b = Buffer.from([position << 1, digit]);
-                rpio.i2cWrite(this.ADDRESS, b);
-            });
-        }
+        let array = [];
+        data.forEach((digit, position) => {
+            array.push(position * 2, digit);
+        });
+        await this._writeArray(array);
     }
 
-    _writeArray(array) {
-        let buffer = Buffer.from(array);
-        this.i2c_b1.i2cWrite(this.ADDRESS, buffer, array.length);
+    async clearDisplay() {
+        let clearRam = [];
+        "0".repeat(16).split("").forEach((digit, position) => {
+            clearRam.push(position * 2, digit);
+        });
+        await this._writeArray(clearRam);
+    }
+
+    async setBrightness(brightness) {
+        this.BRIGHTNESS = Math.min(Math.max(0, brightness), 15); // [0 ~ 15]  
+        await this._writeArray([(0xE0 | this.BRIGHTNESS)]); // Set display to full brightness (Page 15)
+    }
+
+    async _writeArray(data) {
+        let buffer = Buffer.from(data);
+        await this.i2c_b1.i2cWrite(this.ADDRESS, buffer.length, buffer);
     }
 }
 
@@ -57,6 +52,7 @@ class SEVEN_SEGMENT {
     }
 
     _format(value) {
+        let output = "";
         const bitmap = [];
         const stringRep = Array.isArray(value) ? value.join('') : value.toString();
         const chars = stringRep.split('');
@@ -70,7 +66,8 @@ class SEVEN_SEGMENT {
                 bitmap.push(this._charToSevenSegment(char, idx, array));
             }
         });
-        return this._fixBits(bitmap, chars.indexOf(':') !== -1);
+        output = this._fixBits(bitmap, chars.indexOf(':') !== -1);
+        return output;
     }
 
     _charToSevenSegment(char, i, array) {
@@ -123,57 +120,62 @@ class SEVEN_SEGMENT {
 
 async function main() {
     let numbers;
-    let ht16k33 = new HT16K33(async () => {
-        debugger;
-        // await ht16k33.writeData(SEVEN_SEGMENT.format("1:")); await pins.delay(1000);
-        // await ht16k33.writeData(SEVEN_SEGMENT.format("1..2...3...")); await pins.delay(1000);
-        // await ht16k33.writeData(SEVEN_SEGMENT.format(":1")); await pins.delay(1000);
-        // await ht16k33.writeData(SEVEN_SEGMENT.format("1::")); await pins.delay(1000);
+    debugger;
+    let ht16k33 = await HT16K33.factory();
 
-        numbers = "   HELL0 - 0123456789   ";
-        for (let i = 0; i < numbers.length; i++) {
-            if (i > 0) await pins.delay(250);
-            ht16k33.writeData(SEVEN_SEGMENT.format(numbers.substr(i, 4)));
-        }
+    debugger;
 
-        numbers = "abcdefgACEFHJLPU0123456789- ";
-        for (let j = 0; j < 2; j++) {
-            for (let i = 0; i < numbers.length; i++) {
-                if (i > 0) await pins.delay(250);
-                let char = numbers.substr(i, 1);
-                ht16k33.writeData(SEVEN_SEGMENT.format(char.repeat(4)));
-            }
-        }
-
-        ht16k33.writeData(SEVEN_SEGMENT.format("1")); await pins.delay(1000);
-        ht16k33.writeData(SEVEN_SEGMENT.format("12")); await pins.delay(1000);
-        ht16k33.writeData(SEVEN_SEGMENT.format("123")); await pins.delay(1000);
-        ht16k33.writeData(SEVEN_SEGMENT.format("1234")); await pins.delay(1000);
-        ht16k33.writeData(SEVEN_SEGMENT.format("1.234")); await pins.delay(1000);
-        ht16k33.writeData(SEVEN_SEGMENT.format("12.34")); await pins.delay(1000);
-        ht16k33.writeData(SEVEN_SEGMENT.format("12:34")); await pins.delay(1000);
-        ht16k33.writeData(SEVEN_SEGMENT.format("123.4")); await pins.delay(1000);
-        ht16k33.writeData(SEVEN_SEGMENT.format("1234.")); await pins.delay(1000);
-        ht16k33.writeData(SEVEN_SEGMENT.format("23:19")); await pins.delay(1000);
-        ht16k33.writeData(SEVEN_SEGMENT.format("-678")); await pins.delay(1000);
-        ht16k33.writeData(SEVEN_SEGMENT.format(1234)); await pins.delay(1000);
-        ht16k33.writeData(SEVEN_SEGMENT.format(12.34)); await pins.delay(1000);
-        ht16k33.writeData(SEVEN_SEGMENT.format(-888)); await pins.delay(1000);
-        ht16k33.writeData(SEVEN_SEGMENT.format(["1", "2", ":", "3", "4"])); await pins.delay(1000);
-        ht16k33.writeData(SEVEN_SEGMENT.format("8.8.:8.8.")); await pins.delay(1000);
-        ht16k33.writeData(SEVEN_SEGMENT.format("")); await pins.delay(1000);
-
-        for (let i = 9999; i > 0; i -= 3) {
-            if (i > 0) {
-                ht16k33.writeData(SEVEN_SEGMENT.format(i));
-            }
-        }
-
-        ht16k33.writeData(SEVEN_SEGMENT.format("")); await pins.delay(1000);
-    });
-
-
-
+    await Pins.delay(1000);
+    ht16k33.writeData(SEVEN_SEGMENT.format("HELL")); await Pins.delay(1000);
+    ht16k33.writeData(SEVEN_SEGMENT.format("ELL0")); await Pins.delay(1000);
+    ht16k33.clearDisplay(); await Pins.delay(1000);
+    ht16k33.writeData(SEVEN_SEGMENT.format("HELL")); await Pins.delay(1000);
+    ht16k33.writeData(SEVEN_SEGMENT.format("ELL0")); await Pins.delay(1000);
 }
 
 main();
+// await ht16k33.writeData(SEVEN_SEGMENT.format("1:")); await Pins.delay(1000);
+// await ht16k33.writeData(SEVEN_SEGMENT.format("1..2...3...")); await Pins.delay(1000);
+// await ht16k33.writeData(SEVEN_SEGMENT.format(":1")); await Pins.delay(1000);
+// await ht16k33.writeData(SEVEN_SEGMENT.format("1::")); await Pins.delay(1000);
+
+// numbers = "   HELL0 - 0123456789   ";
+// for (let i = 0; i < numbers.length; i++) {
+//     if (i > 0) await Pins.delay(250);
+//     ht16k33.writeData(SEVEN_SEGMENT.format(numbers.substr(i, 4)));
+// }
+
+// numbers = "abcdefgACEFHJLPU0123456789- ";
+// for (let j = 0; j < 2; j++) {
+//     for (let i = 0; i < numbers.length; i++) {
+//         if (i > 0) await Pins.delay(250);
+//         let char = numbers.substr(i, 1);
+//         ht16k33.writeData(SEVEN_SEGMENT.format(char.repeat(4)));
+//     }
+// }
+
+// ht16k33.writeData(SEVEN_SEGMENT.format("1")); await Pins.delay(1000);
+// ht16k33.writeData(SEVEN_SEGMENT.format("12")); await Pins.delay(1000);
+// ht16k33.writeData(SEVEN_SEGMENT.format("123")); await Pins.delay(1000);
+// ht16k33.writeData(SEVEN_SEGMENT.format("1234")); await Pins.delay(1000);
+// ht16k33.writeData(SEVEN_SEGMENT.format("1.234")); await Pins.delay(1000);
+// ht16k33.writeData(SEVEN_SEGMENT.format("12.34")); await Pins.delay(1000);
+// ht16k33.writeData(SEVEN_SEGMENT.format("12:34")); await Pins.delay(1000);
+// ht16k33.writeData(SEVEN_SEGMENT.format("123.4")); await Pins.delay(1000);
+// ht16k33.writeData(SEVEN_SEGMENT.format("1234.")); await Pins.delay(1000);
+// ht16k33.writeData(SEVEN_SEGMENT.format("23:19")); await Pins.delay(1000);
+// ht16k33.writeData(SEVEN_SEGMENT.format("-678")); await Pins.delay(1000);
+// ht16k33.writeData(SEVEN_SEGMENT.format(1234)); await Pins.delay(1000);
+// ht16k33.writeData(SEVEN_SEGMENT.format(12.34)); await Pins.delay(1000);
+// ht16k33.writeData(SEVEN_SEGMENT.format(-888)); await Pins.delay(1000);
+// ht16k33.writeData(SEVEN_SEGMENT.format(["1", "2", ":", "3", "4"])); await Pins.delay(1000);
+// ht16k33.writeData(SEVEN_SEGMENT.format("8.8.:8.8.")); await Pins.delay(1000);
+// ht16k33.clearDisplay(); await Pins.delay(1000);
+
+// for (let i = 9999; i > 0; i -= 3) {
+//     if (i > 0) {
+//         ht16k33.writeData(SEVEN_SEGMENT.format(i));
+//     }
+// }
+
+// ht16k33.clearDisplay();
