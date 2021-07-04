@@ -1,7 +1,6 @@
 ---
 layout: default
 comments: true
-published: true
 title: Hello IoT (PIGPIO)
 ---
 

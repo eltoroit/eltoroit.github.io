@@ -1,7 +1,6 @@
 ---
 layout: default
 comments: true
-published: true
 title: DMA-based PWM with PIGPIO
 ---
 
