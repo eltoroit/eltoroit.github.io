@@ -21,7 +21,7 @@ class HT16K33 {
 	}
 
 	async writeData(data) {
-		console.log(`Write data: ${data}`);
+		// console.log(`Write data: ${data}`);
 		let array = [];
 		data.forEach((digit, position) => {
 			array.push(position * 2, digit);
@@ -45,7 +45,7 @@ class HT16K33 {
 	}
 
 	async _writeArray(data) {
-		console.log(data.map(byte => byte.toString(16)));
+		// console.log(`${data.map(byte => byte.toString(16))}`);
 		let buffer = Buffer.from(data);
 		await this.i2c_b1.i2cWrite(this.ADDRESS, buffer.length, buffer);
 	}
@@ -129,6 +129,7 @@ class SEVEN_SEGMENT {
 			i: 0x10,
 			J: 0x0e,
 			L: 0x38,
+			N: 0x37,
 			n: 0x54,
 			O: 0x3f,
 			o: 0x5c,
@@ -140,28 +141,86 @@ class SEVEN_SEGMENT {
 			u: 0x1c,
 			Y: 0x6e,
 			_: 0x08,
+			' ': 0x00,
 			'"': 0x22,
 			"'": 0x02,
 			"[": 0x39,
 			"]": 0x0f,
 			"=": 0x48,
+			"-": 0x40,
 			"°": 0x63
 		};
 
 		if (char in segments) {
 			return segments[char];
 		} else {
+			throw new Error(`Could not find letter! [${char}]`);
 			return 0;
 		}
 	}
 }
 
 async function smallWait() {
-	if (!true) {
+	// if (true) {
+	if (false) {
 		await Utils.readFromConsole(`Press [enter] to continue...`);
 	} else {
-		await Utils.delay(500);
+		// await Utils.delay(300); // 200 (too fast), 500 (too slow)
+		await Utils.delay(0);
 	}
+}
+
+async function writeWords(ht16k33) {
+	let words = {
+		text: "    ",
+		index: 0
+	}
+
+	async function writeWord(word, isSpacerVisible = true) {
+		if (isSpacerVisible) {
+			word += " = ";
+		}
+		words.text += word;
+		for (let i = 0; i < word.length; i++) {
+			let letters = `${words.text}   `.substr(words.index, 4);
+			console.log(letters);
+			words.index++;
+			data = SEVEN_SEGMENT.format(letters);
+			ht16k33.writeData(data);
+			await smallWait();
+		}
+	}
+
+	await writeWord("HI");
+	await writeWord("HELLO");
+	await writeWord("HOLA");
+
+	await writeWord("0ISPLAY"); // D => 0
+
+	await writeWord("ON");
+	await writeWord("OFF");
+
+	await writeWord("YES");
+	await writeWord("NO");
+
+	await writeWord("OPEN");
+	await writeWord("CLOSE");
+
+	await writeWord("Hot");
+	await writeWord("CoId"); // l => I
+
+	await writeWord("PLAY");
+	await writeWord("PAUSE");
+	await writeWord("StoP");
+	await writeWord("SHUFFLE");
+
+	await writeWord("Error");
+	await writeWord("FAIL");
+	await writeWord("HELP");
+
+	await writeWord("Good 8YE", false); // B => 8
+
+	await writeWord("     ", false); // finish scrolling
 }
 
 async function main() {
@@ -169,7 +228,8 @@ async function main() {
 	let data = null;
 	let ht16k33 = await HT16K33.factory();
 
-	if (true) {
+
+	if (!true) {
 		// Test segments
 		for (const segment of "abcdefg8 ") {
 			let hasDP = false;
@@ -218,68 +278,46 @@ async function main() {
 			ht16k33.writeData(data);
 			await smallWait();
 		}
+
+		// Test characters
+		let allCharacters = `   0123456789AbCcdEFGHhIiJLnOoPrStUuY=_'"[]°   `;
+		for (let i = 0; i < allCharacters.length - 3; i++) {
+			data = SEVEN_SEGMENT.format(allCharacters.substr(i, 4));
+			console.log(`[${allCharacters[i + 3]}]`);
+			ht16k33.writeData(data);
+			await smallWait();
+		}
 	}
 
-	// Test characters
-	let allCharacters = `   0123456789AbCcdEFGHhIiJLnOoPrStUuY=_'"[]°   `;
-	// allCharacters = `   8888   `;
-	for (let i = 0; i < allCharacters.length - 3; i++) {
-		data = SEVEN_SEGMENT.format(allCharacters.substr(i, 4));
-		console.log(`[${allCharacters[i + 3]}]`);
-		ht16k33.writeData(data);
-		await smallWait();
-	}
+	// Write words
+	await writeWords(ht16k33);
 
 	await ht16k33.clearDisplay();
 	console.log("DONE");
-
-	// let numbers;
-	// await Utils.delay(1000);
-	// ht16k33.writeData(SEVEN_SEGMENT.format("HELL")); await Utils.delay(1000);
-	// ht16k33.writeData(SEVEN_SEGMENT.format("ELL0")); await Utils.delay(1000);
-	// ht16k33.clearDisplay(); await Utils.delay(1000);
-	// ht16k33.writeData(SEVEN_SEGMENT.format("HELL")); await Utils.delay(1000);
-	// ht16k33.writeData(SEVEN_SEGMENT.format("ELL0")); await Utils.delay(1000);
 }
 
 main();
-// await ht16k33.writeData(SEVEN_SEGMENT.format("1:")); await Utils.delay(1000);
-// await ht16k33.writeData(SEVEN_SEGMENT.format("1..2...3...")); await Utils.delay(1000);
-// await ht16k33.writeData(SEVEN_SEGMENT.format(":1")); await Utils.delay(1000);
-// await ht16k33.writeData(SEVEN_SEGMENT.format("1::")); await Utils.delay(1000);
+// await ht16k33.writeData(SEVEN_SEGMENT.format("1:")); await smallWait();
+// await ht16k33.writeData(SEVEN_SEGMENT.format("1..2...3...")); await smallWait();
+// await ht16k33.writeData(SEVEN_SEGMENT.format(":1")); await smallWait();
+// await ht16k33.writeData(SEVEN_SEGMENT.format("1::")); await smallWait();
 
-// numbers = "   HELL0 - 0123456789   ";
-// for (let i = 0; i < numbers.length; i++) {
-//     if (i > 0) await Utils.delay(250);
-//     ht16k33.writeData(SEVEN_SEGMENT.format(numbers.substr(i, 4)));
-// }
-
-// numbers = "abcdefgACEFHJLPU0123456789- ";
-// for (let j = 0; j < 2; j++) {
-//     for (let i = 0; i < numbers.length; i++) {
-//         if (i > 0) await Utils.delay(250);
-//         let char = numbers.substr(i, 1);
-//         ht16k33.writeData(SEVEN_SEGMENT.format(char.repeat(4)));
-//     }
-// }
-
-// ht16k33.writeData(SEVEN_SEGMENT.format("1")); await Utils.delay(1000);
-// ht16k33.writeData(SEVEN_SEGMENT.format("12")); await Utils.delay(1000);
-// ht16k33.writeData(SEVEN_SEGMENT.format("123")); await Utils.delay(1000);
-// ht16k33.writeData(SEVEN_SEGMENT.format("1234")); await Utils.delay(1000);
-// ht16k33.writeData(SEVEN_SEGMENT.format("1.234")); await Utils.delay(1000);
-// ht16k33.writeData(SEVEN_SEGMENT.format("12.34")); await Utils.delay(1000);
-// ht16k33.writeData(SEVEN_SEGMENT.format("12:34")); await Utils.delay(1000);
-// ht16k33.writeData(SEVEN_SEGMENT.format("123.4")); await Utils.delay(1000);
-// ht16k33.writeData(SEVEN_SEGMENT.format("1234.")); await Utils.delay(1000);
-// ht16k33.writeData(SEVEN_SEGMENT.format("23:19")); await Utils.delay(1000);
-// ht16k33.writeData(SEVEN_SEGMENT.format("-678")); await Utils.delay(1000);
-// ht16k33.writeData(SEVEN_SEGMENT.format(1234)); await Utils.delay(1000);
-// ht16k33.writeData(SEVEN_SEGMENT.format(12.34)); await Utils.delay(1000);
-// ht16k33.writeData(SEVEN_SEGMENT.format(-888)); await Utils.delay(1000);
-// ht16k33.writeData(SEVEN_SEGMENT.format(["1", "2", ":", "3", "4"])); await Utils.delay(1000);
-// ht16k33.writeData(SEVEN_SEGMENT.format("8.8.:8.8.")); await Utils.delay(1000);
-// ht16k33.clearDisplay(); await Utils.delay(1000);
+// ht16k33.writeData(SEVEN_SEGMENT.format("1")); await smallWait();
+// ht16k33.writeData(SEVEN_SEGMENT.format("12")); await smallWait();
+// ht16k33.writeData(SEVEN_SEGMENT.format("123")); await smallWait();
+// ht16k33.writeData(SEVEN_SEGMENT.format("1234")); await smallWait();
+// ht16k33.writeData(SEVEN_SEGMENT.format("1.234")); await smallWait();
+// ht16k33.writeData(SEVEN_SEGMENT.format("12.34")); await smallWait();
+// ht16k33.writeData(SEVEN_SEGMENT.format("12:34")); await smallWait();
+// ht16k33.writeData(SEVEN_SEGMENT.format("123.4")); await smallWait();
+// ht16k33.writeData(SEVEN_SEGMENT.format("1234.")); await smallWait();
+// ht16k33.writeData(SEVEN_SEGMENT.format("23:19")); await smallWait();
+// ht16k33.writeData(SEVEN_SEGMENT.format("-678")); await smallWait();
+// ht16k33.writeData(SEVEN_SEGMENT.format(1234)); await smallWait();
+// ht16k33.writeData(SEVEN_SEGMENT.format(12.34)); await smallWait();
+// ht16k33.writeData(SEVEN_SEGMENT.format(-888)); await smallWait();
+// ht16k33.writeData(SEVEN_SEGMENT.format(["1", "2", ":", "3", "4"])); await smallWait();
+// ht16k33.writeData(SEVEN_SEGMENT.format("8.8.:8.8.")); await smallWait();
 
 // for (let i = 9999; i > 0; i -= 3) {
 //     if (i > 0) {
