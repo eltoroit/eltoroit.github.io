@@ -79,14 +79,6 @@ exports.Pins = class Pins {
         return this._validateOutput(Physical, PINS.find(pin => pin.Physical === Physical)).BCM;
     }
 
-    static delay(ms) {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve();
-            }, ms);
-        })
-    }
-
     // RPIO
     static FlipState_RPIO(input) {
         let output = rpio.HIGH;
