@@ -80,5 +80,8 @@
         "PIGPIO",
         "sudo",
         "pigpiod"
-    ]
+    ],
+    "prettier.printWidth": 200,
+    "prettier.tabWidth": 4,
+    "prettier.useTabs": true
 }
