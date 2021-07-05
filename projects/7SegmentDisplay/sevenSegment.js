@@ -56,56 +56,43 @@ const characters = {
     "°": 0x63
 };
 
-function displaySegment(segment, hasDP = false, hasColon = false) {
-    let LEDs = null;
+exports.SEVEN_SEGMENT = class {
+    static displaySegment(segment, hasDP = false, hasColon = false) {
+        let LEDs = null;
 
-    if (segment in segments) {
-        LEDs = segments[segment];
-    } else {
-        LEDs = 0x00;
-    }
-    if (hasDP) {
-        LEDs = LEDs | 0x80;
-    }
-    return [LEDs, LEDs, hasColon ? 0x02 : 0, LEDs, LEDs];
-}
-
-function displayCharacters(value) {
-    console.log(`[${value}]`);
-    let output = "";
-    const bitmap = [];
-    const stringRep = Array.isArray(value) ? value.join("") : value.toString();
-    const chars = stringRep.split("");
-    chars.forEach((char, idx, array) => {
-        if (char === ".") {
-            let previousDigit = bitmap[bitmap.length - 1];
-            bitmap[bitmap.length - 1] = previousDigit | (1 << 7); // 0x80
-        } else if (char === ":") {
-            // Ignore it
+        if (segment in segments) {
+            LEDs = segments[segment];
         } else {
-            bitmap.push(_charTo7Segment(char, idx, array));
+            LEDs = 0x00;
         }
-    });
-    output = _fixBits(bitmap, chars.indexOf(":") !== -1);
-    return output;
-}
-
-function _fixBits(bitmap, hasColon) {
-    for (let i = bitmap.length; i < 4; i++) {
-        bitmap.unshift(0);
+        if (hasDP) {
+            LEDs = LEDs | 0x80;
+        }
+        return [LEDs, LEDs, hasColon ? 0x02 : 0, LEDs, LEDs];
     }
-    bitmap.splice(2, 0, hasColon ? 0x02 : 0);
-    return bitmap;
-}
 
-function _charTo7Segment(char) {
-    if (char in characters) {
-        return characters[char];
-    } else {
-        throw new Error(`Could not find letter! [${char}]`);
-        return 0;
+    static displayCharacters(value) {
+        console.log(`[${value}]`);
+        const bitmap = [];
+        const chars = (Array.isArray(value) ? value.join("") : value.toString()).split("");
+        chars.forEach((char, idx, array) => {
+            if (char === ".") {
+                let previousDigit = bitmap[bitmap.length - 1];
+                bitmap[bitmap.length - 1] = previousDigit | (1 << 7); // 0x80
+            } else if (char === ":") {
+                // Ignore it
+            } else {
+                if (char in characters) {
+                    bitmap.push(characters[char]);;
+                } else {
+                    throw new Error(`Could not find letter! [${char}]`);
+                }
+            }
+        });
+        for (let i = bitmap.length; i < 4; i++) {
+            bitmap.unshift(0);
+        }
+        bitmap.splice(2, 0, (chars.indexOf(":") !== -1) ? 0x02 : 0x00);
+        return bitmap;
     }
 }
-
-exports.displaySegment = displaySegment;
-exports.displayCharacters = displayCharacters;

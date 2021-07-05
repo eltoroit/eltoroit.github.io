@@ -1,9 +1,9 @@
 const HT16K33 = require("./HT16K33");
-const { displaySegment, displayCharacters } = require("./sevenSegment");
 const { Utils } = require("../utils");
+const { SEVEN_SEGMENT } = require("./sevenSegment");
 
 async function smallWait() {
-    switch (1) {
+    switch (2) {
         case 1: {
             await Utils.readFromConsole(`Press [enter] to continue...`);
             break;
@@ -53,7 +53,7 @@ async function testSegments(ht16k33) {
                     console.log("ERROR!!!!");
                     break;
             }
-            data = displaySegment(segment, hasDP, hasColon);
+            data = SEVEN_SEGMENT.displaySegment(segment, hasDP, hasColon);
             console.log(`[SEGMENT]${hasDP ? "[DP]" : ""}${hasColon ? "COLON" : ""}[${segment}]`);
             await ht16k33.writeData(data);
             await smallWait();
@@ -65,7 +65,7 @@ async function testBrightness(ht16k33) {
     for (let i = -1; i <= 4; i++) {
         let brightness = 5 * i; // [-5 ~ 20], but function should correct to [0 ~ 15]
         await ht16k33.setBrightness(brightness);
-        await ht16k33.writeData(displayCharacters("8.8.:8.8."));
+        await ht16k33.writeData(SEVEN_SEGMENT.displayCharacters("8.8.:8.8."));
         await smallWait();
     }
 }
@@ -74,7 +74,7 @@ async function testCharacters(ht16k33) {
     let data = null;
     let allCharacters = `   0123456789AbCcdEFGHhIiJLnOoPrStUuY=_'"[]°   `;
     for (let i = 0; i < allCharacters.length - 3; i++) {
-        data = displayCharacters(allCharacters.substr(i, 4));
+        data = SEVEN_SEGMENT.displayCharacters(allCharacters.substr(i, 4));
         await ht16k33.writeData(data);
         await smallWait();
     }
@@ -94,7 +94,7 @@ async function writeWords(ht16k33) {
         for (let i = 0; i < word.length; i++) {
             let letters = `${words.text}   `.substr(words.index, 4);
             words.index++;
-            data = displayCharacters(letters);
+            data = SEVEN_SEGMENT.displayCharacters(letters);
             await ht16k33.writeData(data);
             await smallWait();
         }
@@ -142,7 +142,7 @@ async function writeNumbers(ht16k33) {
     values.push(":1");
     values.push("1::");
     for (let value of values) {
-        await ht16k33.writeData(displayCharacters(value));
+        await ht16k33.writeData(SEVEN_SEGMENT.displayCharacters(value));
         await smallWait();
     }
 
@@ -157,7 +157,7 @@ async function writeNumbers(ht16k33) {
     values.push("8.8.:8.8.");
     values.push(["1", "2", ":", "3", "4"]);
     for (let value of values) {
-        await ht16k33.writeData(displayCharacters(value));
+        await ht16k33.writeData(SEVEN_SEGMENT.displayCharacters(value));
         await smallWait();
     }
 
@@ -170,7 +170,7 @@ async function writeNumbers(ht16k33) {
     values.push("-2°C");
     values.push("-5°F");
     for (let value of values) {
-        await ht16k33.writeData(displayCharacters(value));
+        await ht16k33.writeData(SEVEN_SEGMENT.displayCharacters(value));
         await smallWait();
     }
 
@@ -178,7 +178,7 @@ async function writeNumbers(ht16k33) {
     // for (let i = 9999; i > 0; i -= 3) {
     for (let i = 9; i > 0; i -= 1) {
         if (i > 0) {
-            await ht16k33.writeData(displayCharacters(i));
+            await ht16k33.writeData(SEVEN_SEGMENT.displayCharacters(i));
             // await smallWait();
         }
     }
