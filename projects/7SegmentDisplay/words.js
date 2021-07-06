@@ -104,6 +104,9 @@ async function writeWords(ht16k33) {
     await writeWord("HELLO");
     await writeWord("HOLA");
 
+    await writeWord("rASPbErrY PI"); // B => 8
+    await writeWord("JAUASCrIPt"); // V => U
+    await writeWord("NodE JS"); // D => 0
     await writeWord("0ISPLAY"); // D => 0
 
     await writeWord("ON");
@@ -186,12 +189,12 @@ async function writeNumbers(ht16k33) {
 
 async function main() {
     debugger;
-    let ht16k33 = await HT16K33.factory();
+    let ht16k33 = await HT16K33.factory(false);
 
-    await testSegments(ht16k33);
-    await testBrightness(ht16k33);
-    await testCharacters(ht16k33);
-    await writeNumbers(ht16k33);
+    // await testSegments(ht16k33);
+    // await testBrightness(ht16k33);
+    // await testCharacters(ht16k33);
+    // await writeNumbers(ht16k33);
     await writeWords(ht16k33);
 
     await ht16k33.clearDisplay();
