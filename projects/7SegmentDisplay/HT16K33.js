@@ -2,15 +2,17 @@ const i2c = require("i2c-bus");
 const pigpio = require("pigpio");
 const Gpio = pigpio.Gpio;
 
-const factory = async () => {
+const factory = async (isDebug = false) => {
     let ht16k33 = new HT16K33();
-    ht16k33.i2c_b1 = await i2c.openPromisified(1);
-    console.log(`Turn on the oscillator (Page 10)`);
-    await ht16k33._writeArray([(0x20 | 0x01)]);
-    console.log(`Turn display on, and no blinking (Page 11)`);
-    await ht16k33._writeArray([(0x80 | 0x01 | 0x00)]);
-    await ht16k33.setBrightness(ht16k33.BRIGHTNESS);
-    await ht16k33.clearDisplay();
+    if (!isDebug) {
+        ht16k33.i2c_b1 = await i2c.openPromisified(1);
+        console.log(`Turn on the oscillator (Page 10)`);
+        await ht16k33._writeArray([(0x20 | 0x01)]);
+        console.log(`Turn display on, and no blinking (Page 11)`);
+        await ht16k33._writeArray([(0x80 | 0x01 | 0x00)]);
+        await ht16k33.setBrightness(ht16k33.BRIGHTNESS);
+        await ht16k33.clearDisplay();
+    }
     return ht16k33;
 }
 
@@ -44,9 +46,13 @@ class HT16K33 {
     }
 
     async _writeArray(data) {
-        // console.log(`${data.map(byte => byte.toString(16))}`);
-        let buffer = Buffer.from(data);
-        await this.i2c_b1.i2cWrite(this.ADDRESS, buffer.length, buffer);
+        if (this.i2c_b1) {
+            // console.log(`${data.map(byte => byte.toString(16))}`);
+            let buffer = Buffer.from(data);
+            await this.i2c_b1.i2cWrite(this.ADDRESS, buffer.length, buffer);
+        } else {
+            console.log("*** IN DEBUG MODE ***");
+        }
     }
 }
 
