@@ -16,8 +16,8 @@ plugins:
 # Search Engine
 title: JS4IoT.com
 url: "https://www.js4iot.com/"
-tagline: Diary of a developer learning electronics
-description: Diary of a Salesforce + Node.js developer learning electronics and IoT primarily using Raspberry Pi. Join me, as I share my experiences in this fantastic world. Let's learn together! Tutorials, demos, explanations. Understand how Raspberry Pi, Node.js, IoT, Salesforce, and other technologies can interact together.
+tagline: Diary of a JavaScript developer on the magical world of IoT and electronics
+description: Diary of a JavaScript developer working on electronics and IoT primarily using Raspberry Pi. Join me, as I share my experiences in this fantastic world. Let's learn together! Tutorials, demos, explanations. Understand how Raspberry Pi, Node.js, IoT, and other technologies can interact together.
 author:
   twitter: eltoroit
 social:

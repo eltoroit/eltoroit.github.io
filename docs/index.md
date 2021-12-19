@@ -1,7 +1,7 @@
 ---
 layout: default
 comments: true
-title: JavaScript Developers Working on IoT Projects !
+title: JS4IoT - JavaScript Developer Working on IoT Projects !
 ---
 
 <img src="/assets/blog/2021-02-14/RPI+NJS.png" style="text-align: center; display: block; margin-left: auto; margin-right: auto;max-width: 80%;" />
