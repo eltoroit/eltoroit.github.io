@@ -1,10 +1,12 @@
 ---
 layout: default
 comments: true
-title: Electronics For Developers
+title: JavaScript Developers Working on IoT Projects !
 ---
 
 <img src="/assets/blog/2021-02-14/RPI+NJS.png" style="text-align: center; display: block; margin-left: auto; margin-right: auto;max-width: 80%;" />
+
+Thanks to the power of the <a href="https://www.raspberrypi.org/">Raspberry Pi</a>, and <a href="https://nodejs.org/en/">Node.js</a>, JavaScript developers can build any IoT project they desire without having to learn new technologies!
 
 # Articles Written
 

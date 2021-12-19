@@ -1,15 +1,28 @@
 # Tools:
 
 - [Blog](https://eltoroit.github.io/)
--
+- [Blog](https://js4iot.com/)
 
 ## Website
 
+- Installation
+```
+# Install Ruby
+sudo apt-get install ruby-full build-essential
+sudo gem install bundler jekyll
+# Install dependencies
+npm install
+cd docs
+bundle install
+# Test local site
+bundle exec jekyll serve --watch --port 3001 --unpublished --drafts
+```
+
 - builder:
   - Tool: https://jekyllrb.com/
-    - `bundle exec jekyll serve --watch --port 3000 --unpublished --drafts`
+    - `bundle exec jekyll serve --watch --port 3001 --unpublished --drafts`
     - [Template](https://github.com/pages-themes/architect)
-  - Test `bundle exec jekyll doctor`
+  - Test `bundle exec jekyll doctor` helps find errors
 
 It takes at least one minute after pushing for the changes to be published to pages ;-)
 

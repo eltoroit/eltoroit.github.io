@@ -15,7 +15,7 @@ plugins:
   - jekyll-seo-tag
 # Search Engine
 title: ELTOROIT's Journey
-url: "https://eltoroit.github.io"
+url: "https://www.js4iot.com/"
 tagline: Diary of a developer learning electronics
 description: Diary of a Salesforce + Node.js developer learning electronics and IoT primarily using Raspberry Pi. Join me, as I share my experiences in this fantastic world. Let's learn together! Tutorials, demos, explanations. Understand how Raspberry Pi, Node.js, IoT, Salesforce, and other technologies can interact together.
 author:

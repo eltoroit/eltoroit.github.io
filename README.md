@@ -1,1 +1,1 @@
-Please visit [my blog](https://eltoroit.github.io/)
+Please visit [my blog](https://www.js4iot.com/)
